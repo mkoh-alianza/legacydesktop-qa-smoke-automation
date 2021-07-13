@@ -2,7 +2,7 @@
 ## Tests
 Currently there are two audio tests set up, the sine wave test and the voice recognition test.
 
-###Sine Wave Test
+### Sine Wave Test
 This test can be used to test the amount of sound data that is lost over the connection. Using a sine wave audio file, we can mitigate factors like audio compression and recording quality and highlight the loss that is the result of the client or internet connections.
 
 For this test, you will need to play the sine wave through one end of a call or collab call, and record it on the other end. (Using VB Cable https://vb-audio.com/Cable/ or other software)
@@ -13,7 +13,7 @@ Once it is recorded, you can run the test by running 'python frequency_analyzer.
 It will prompt you for the file, and return the number of data points, the number of missing data points, and the percent of the sine wave that is missing 
 It takes into account the silence before and after the wave.
 
-##Voice Recognition Test
+### Voice Recognition Test
 This test determines audio quality by using voice recognition to analyze and audio file. Based on how many of the words the audio recognizer gets correct, we can infer the quality of the recording.
 
 For this test, you will need to record speech that is being played on one end of a call or collab call and record it on the other end. (Using VB Cable https://vb-audio.com/Cable/ or other software. You can also talk into the microphone and use that) 
