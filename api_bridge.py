@@ -281,7 +281,8 @@ Content-Length: {content_length}'''.format(request_type=api_request_types['prope
         
         for response in responses:
             tId = self._get_transaction_id(response)
-
+            print(tId)
+            print(response)
             if tId > self.last_transaction_id:
                 raise AssertionError('No response found.')
 
@@ -289,7 +290,15 @@ Content-Length: {content_length}'''.format(request_type=api_request_types['prope
                 self.last_response = response
                 return
 
-
+    def _get_all_responses(self):
+        responses = self.ws.__iter__()
+        count = 0;
+        for response in responses:
+            print(response)
+            count = count + 1
+            if(count > 7):
+                return
+    
     def _get_transaction_id(self, data):
         '''
         Get transaction id from xml in string format.

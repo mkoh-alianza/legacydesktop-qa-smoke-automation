@@ -1,8 +1,6 @@
 import sys
 import numpy as np
 import matplotlib.pyplot as plt
-
-
 from scipy.io.wavfile import read, write
 import scipy.signal as sps
 from IPython.display import Audio
@@ -18,18 +16,26 @@ from audio_recognizer import AudioRecognizer
 from text_compare import TextComparer
 from api_bridge import ApiBridge
 from variables import *
+from device_io import DeviceIO 
 
+io = DeviceIO()
 bridge = ApiBridge('wss://cpclientapi.softphone.com:9002/counterpath/socketapi/v1')
 
-print(bridge.open_connection())
-print(bridge.send_message(api_request_types['CALL'], '<?xml version="1.0" encoding="utf-8" ?><dial type="audio"><number>1312132</number><displayName>Bro</displayName><suppressMainWindow>false</suppressMainWindow>'))
+io.setDevices()
+io.loadFile("weekday1.wav")
 
-print("Enter the name of the audio file to analyze")
-filename = input()
+print(bridge.open_connection())
+print(bridge.send_message(api_request_types['CALL'], '<?xml version="1.0" encoding="utf-8" ?><dial type="audio"><number>7035</number><displayName>Bro</displayName><suppressMainWindow>false</suppressMainWindow>'))
+
+bridge.wait(10)
+
+print(bridge._get_all_responses())
+#io.playRecord("test1.wav")
+
 print(bridge.close_connection())
 
-output = AudioRecognizer.work(filename)
+#output = AudioRecognizer.work("test1.wav")
 
-TextComparer.compareOutputToFile("word_list.txt", output)
+#TextComparer.compareOutputToFile("word_list.txt", output)
 
 
