@@ -1,10 +1,13 @@
 import sys
+import os
+
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.io.wavfile import read, write
 import scipy.signal as sps
 from IPython.display import Audio
 from numpy.fft import fft, ifft
+import time
 
 sys.path.append('s./env/Lib/site-packages')
 import librosa
@@ -16,19 +19,15 @@ from audio_recognizer import AudioRecognizer
 from text_compare import TextComparer
 from api_bridge import ApiBridge
 from variables import *
+from test_agent import TestAgent
 from device_io import DeviceIO 
+from audio_recognizer import AudioRecognizer
+from constants import *
+
+agent = TestAgent(WEBSOCKET_ADDRESS)
 
 io = DeviceIO()
-bridge = ApiBridge('wss://cpclientapi.softphone.com:9002/counterpath/socketapi/v1')
+io.playRecord("./outputs/test1.wav")
 
-io.setDevices()
-io.loadFile("./test_sound_files/weekday1.wav")
-
-print(bridge.open_connection())
-print(bridge.send_message(api_request_types['CALL'], '<?xml version="1.0" encoding="utf-8" ?><dial type="audio"><number>7035</number><displayName>Bro</displayName><suppressMainWindow>false</suppressMainWindow>'))
-
-bridge.wait(10)
-
-io.playRecord("test1.wav")
-
-
+agent.io_setup()
+agent.two_point_zero_one()

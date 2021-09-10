@@ -3,7 +3,7 @@
 '''============================================================================
                                 CHANGE THESE
 ==============================================================================='''
-REMOTEEND = '1502'  # SIP number that will be called during testing. Make the remote is setup to auto-answer.
+REMOTEEND = '7035'  # SIP number that will be called during testing. Make the remote is setup to auto-answer.
 FILENAME = 'UserscpqaDesktopmy_recording'  # File path that call recordings will be saved
 CONTACT = 'qatest1@counterpath.com'  # XMPP address of an existing contact.
 '''==============================================================================='''
@@ -42,7 +42,7 @@ FALSECONTACT = 'K23JH(3H3KJ'
                                 MESSAGE CONSTANTS
 ==============================================================================='''
 
-xml_declaration_string = 'xml version=1.0 encoding=utf-8 rn'
+xml_declaration_string = '<?xml version="1.0" encoding="utf-8" ?>'
 
 user_agent_string = 'Robot Framework'
 

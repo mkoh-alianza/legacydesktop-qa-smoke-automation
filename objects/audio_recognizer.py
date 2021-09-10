@@ -1,6 +1,7 @@
 import speech_recognition as sr
-
+import sys
 from os import path
+sys.path.append('./objects')
 from text_compare import TextComparer
 
 class AudioRecognizer:

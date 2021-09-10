@@ -21,12 +21,14 @@ class DeviceIO:
     
     def setDevices(self):
         info = sd.query_devices()
-
+        
         for idx, x in enumerate(info):
-            if x['name'] == 'CABLE Input (VB-Audio Virtual Cable)' and x['hostapi'] == 1:
+            if x['name'] == 'CABLE-A Input (VB-Audio Cable A':
                 self.inputIdx = idx
-            elif x['name'] == 'CABLE Output (VB-Audio Virtual Cable)' and x['hostapi'] == 1:
+                print('foundIn')
+            elif x['name'] == 'CABLE-B Output (VB-Audio Cable ':
                 self.outputIdx = idx
+                print('foundOut')
                 
         if(self.inputIdx == 0 or self.outputIdx == 0):
             print('Unable to find the VC Cable, here are all detected audio devices:')
@@ -35,9 +37,10 @@ class DeviceIO:
             self.outputIdx = input()
             print('Now enter the number of one of the VC Input')
             self.inputIdx = input()
+            
         sd.default.device = self.outputIdx, self.inputIdx
 
-    def record(self, filname):
+    def record(self, filename):
         self.backData = sd.rec(self.inputData, samplerate=self.fs, channels=2, dtype ='float64')
         sd.wait()
         sf.write(filename, self.backData, self.fs)

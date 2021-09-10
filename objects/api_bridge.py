@@ -25,12 +25,13 @@ class ApiBridge:
         'SUCCESS': string (byte array) value.
             If function does not raise an error.
         '''
+        result = 0
         try:
             self.ws = create_connection(url=self.uri, sslopt={"cert_reqs": ssl.CERT_NONE})
         except Exception as e:
             raise AssertionError('Could not connect to server.\r\n' + str(e))
-        
-        return 'SUCCESS'
+       
+        return result
     
 
     def close_connection(self):
@@ -106,6 +107,7 @@ class ApiBridge:
             # logger.console('\r\nSending...\r\n{msg}'.format(msg=msg))
             self.ws.send(msg)
             self._set_last_response()
+            
         except:
             raise AssertionError('Could not send message or send response.')
         
@@ -162,7 +164,7 @@ Content-Length: {content_length}'''.format(request_type=api_request_types['prope
         except Exception as e:
             raise AssertionError('Could not check voicemail.\r\nException: ' + str(e))
    
-
+     
     def set_audio_properties(self, mute, speaker_mute, speaker, speaker_volume, microphone_volume):
         content = xml_declaration_string + '''<audioProperties>
 <mute>{mute}</mute>
@@ -229,7 +231,7 @@ Content-Length: {content_length}'''.format(request_type=api_request_types['prope
     
     def place_call(self, remote_end=''):
         try:
-            self.send_message(api_request_types['CALL'], xml_declaration_string + '<dial type="audio">\r\n <number>{remote_end}</number>\r\n <suppressMainWindow>true</suppressMainWindow>\r\n</dial>'.format(remote_end=remote_end))
+            self.send_message(api_request_types['CALL'], xml_declaration_string + '<dial type="audio">\r\n <number>{remote_end}</number>\r\n<displayName>Test</displayName>\r\n<suppressMainWindow>false</suppressMainWindow>\r\n</dial>'.format(remote_end=remote_end))
             self.set_call_id()
         except:
             raise AssertionError('Could not place call.')
@@ -268,7 +270,30 @@ Content-Length: {content_length}'''.format(request_type=api_request_types['prope
 
         return 'SUCCESS'
     
+    def set_device(self, deviceName, deviceID, deviceType, deviceRole):
+        try:
+            self.send_message(api_request_types['SELECTAUDIODEVICES'], xml_declaration_string + '<devices><device><name>{deviceName}</name><id>{deviceID}</id><type>{deviceType}</type><role>{deviceRole}</role></device></devices>'.format(deviceName=deviceName, deviceID=deviceID, deviceType=deviceType, deviceRole=deviceRole))
+        except:
+            raise AssertionError('Could not set audio device.')
+        
+        return 'SUCCESS'
     
+    def get_device_info(self):
+        deviceList = {}
+        try:
+            self.get_status('audioDevices')
+            response = self.last_response
+            response = self._get_xml_portion(response)
+               
+            root = ET.fromstring(response)
+            for device in root.find('devices'):
+                deviceList[device.find('name').text] = device.find('id').text
+                
+            #self.callId = root.find('call').find('id').text
+        except AttributeError:
+            raise AssertionError('Could not find call id.')
+        
+        return deviceList
     '''======================================================================
                                 HELPER FUNCTIONS
     ========================================================================='''
@@ -281,8 +306,6 @@ Content-Length: {content_length}'''.format(request_type=api_request_types['prope
         
         for response in responses:
             tId = self._get_transaction_id(response)
-            print(tId)
-            print(response)
             if tId > self.last_transaction_id:
                 raise AssertionError('No response found.')
 
@@ -294,7 +317,6 @@ Content-Length: {content_length}'''.format(request_type=api_request_types['prope
         responses = self.ws.__iter__()
         count = 0;
         for response in responses:
-            print(response)
             count = count + 1
             if(count > 7):
                 return
@@ -327,7 +349,7 @@ Content-Length: {content_length}'''.format(request_type=api_request_types['prope
 
     def wait(self, length):
         sleep(int(length))
-
+    
     def set_call_id(self):
         try:
             self.get_status('call')
