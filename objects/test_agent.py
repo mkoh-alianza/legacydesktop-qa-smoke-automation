@@ -43,7 +43,7 @@ class TestAgent:
 
         time.sleep(5)
 
-        self.io.playRecord(os.getcwd() +"../outputs/test1.wav")
+        self.io.playRecord(os.getcwd() + "../outputs/test1.wav")
 
         output = AudioRecognizer.work(os.getcwd() + "../outputs/test1.wav")
 
