@@ -17,7 +17,7 @@ class TestAgent:
     def __init__(self, uri):
         self.bridge = ApiBridge('wss://cpclientapi.softphone.com:9002/counterpath/socketapi/v1')
         self.io = DeviceIO()
-        
+        self.io.loadFile(os.getcwd() + "./test-data/weekday1.wav")
         
 
     def io_setup(self):
@@ -42,10 +42,10 @@ class TestAgent:
         print(self.bridge.place_call(REMOTEEND))
 
         time.sleep(5)
+        self.io.loadFile(os.getcwd() + "./test-data/weekday1.wav")
+        self.io.playRecord(os.getcwd() + "./outputs/test1.wav")
 
-        self.io.playRecord(os.getcwd() + "../outputs/test1.wav")
-
-        output = AudioRecognizer.work(os.getcwd() + "../outputs/test1.wav")
+        output = AudioRecognizer.work(os.getcwd() + "./outputs/test1.wav")
 
         TextComparer.compareOutputToFile("./test-data/word_list.txt", output)
         self.bridge.close_connection()

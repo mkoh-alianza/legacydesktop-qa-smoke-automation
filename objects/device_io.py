@@ -19,6 +19,8 @@ class DeviceIO:
     def loadFile(self, filename):
         self.inputData, self.fs = librosa.load(filename)
     
+    
+    #Sets devices for IO manager to VB Cables
     def setDevices(self):
         info = sd.query_devices()
         
@@ -39,13 +41,15 @@ class DeviceIO:
             self.inputIdx = input()
             
         sd.default.device = self.outputIdx, self.inputIdx
-
-    def record(self, filename):
-        self.backData = sd.rec(self.inputData, samplerate=self.fs, channels=2, dtype ='float64')
+    
+    #records for a time, based on input data size
+    def record(self, filename, duration):
+        self.backData = sd.rec(int(duration * self.fs), samplerate=self.fs, channels=2, dtype ='float64')
         sd.wait()
         sf.write(filename, self.backData, self.fs)
         return self.backData
-        
+    
+    #plays the given audio file
     def play(self, filename):
         sd.play(self.inputData, samplerate=self.fs, channels=2, dtype='float64')
         sd.wait()

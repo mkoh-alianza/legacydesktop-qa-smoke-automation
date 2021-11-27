@@ -23,11 +23,15 @@ from test_agent import TestAgent
 from device_io import DeviceIO 
 from audio_recognizer import AudioRecognizer
 from constants import *
+from action_clicker import ActionClicker
+
+ActionClicker.doAction('minimize')
+time.sleep(4)
+ActionClicker.doAction('maximize')
 
 agent = TestAgent(WEBSOCKET_ADDRESS)
 
-io = DeviceIO()
-io.playRecord("./outputs/test1.wav")
 
 agent.io_setup()
 agent.two_point_zero_one()
+

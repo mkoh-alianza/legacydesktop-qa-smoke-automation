@@ -45,4 +45,5 @@ backports.ssl-match-hostname==3.7.0.1
 docutils==0.16
 robotframework==4.0
 websocket-client==0.58.0
-
+pynput==1.7.3
+PyAutoGUI==0.9.52
