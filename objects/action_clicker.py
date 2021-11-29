@@ -23,7 +23,7 @@ class ActionClicker:
             pyautogui.mouseUp(button=coords[j][3])
             
     def switchToRemote(self, pc):
-        os.getcwd() + './actions/remote.txt', 'r') as f:
+        with open(os.getcwd() + './actions/remote.txt', 'r') as f:
             for line in f:
                 coords.append(eval(line))
         
