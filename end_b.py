@@ -14,7 +14,6 @@ import time
 io = DeviceIO()
 io.setDevices()
 
-io.record("test1")
 time.sleep(10)
 
 
