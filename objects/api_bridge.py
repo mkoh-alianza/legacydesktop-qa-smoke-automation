@@ -131,7 +131,7 @@ Content-Length: {content_length}'''.format(request_type=api_request_types['prope
                                             content_length=content_length)
         if (content_length > 0): msg += '\r\n\r\n' + body
         return msg
-	
+    
 
     def _get_next_transaction_ID(self):
         self.last_transaction_id += 1
@@ -235,7 +235,7 @@ Content-Length: {content_length}'''.format(request_type=api_request_types['prope
             self.set_call_id()
         except:
             raise AssertionError('Could not place call.')
-
+            
         self.wait(7)
         
         return 'SUCCESS'

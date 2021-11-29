@@ -71,6 +71,8 @@ api_request_types = {
     'SIGNIN':					21,
     'SIGNOUT':				22,
     'EXIT':					23,
+	'STARTATTENDEDTRANSFER': 24,
+	'MERGE': 25,
 
     'properties': {
         0: {'text': "bringToFront"},
@@ -97,6 +99,8 @@ api_request_types = {
         21: {'text': "signIn"},
         22: {'text': "signOut"},
         23: {'text': "exit"},
+		24: {'text': "startAttendedTransferCall"},
+		25: {'text': "merge"},
     }
 }
 
