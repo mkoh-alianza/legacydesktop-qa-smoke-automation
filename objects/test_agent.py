@@ -10,7 +10,7 @@ from variables import *
 from device_io import DeviceIO 
 from audio_recognizer import AudioRecognizer
 from constants import *
-
+from action_clicker import ActionClicker
 
 class TestAgent:
 
@@ -37,10 +37,31 @@ class TestAgent:
      
 
     def two_point_zero_one(self):
-        
+        '''
         self.bridge.open_connection();
         print(self.bridge.place_call(REMOTEEND))
+        '''
+        ActionClicker.doAction("Dial")
+        ActionClicker.doAction("Call")
+        
+        time.sleep(5)
+        self.io.loadFile(os.getcwd() + "./test-data/weekday1.wav")
+        self.io.playRecord(os.getcwd() + "./outputs/test1.wav")
 
+        output = AudioRecognizer.work(os.getcwd() + "./outputs/test1.wav")
+
+        TextComparer.compareOutputToFile("./test-data/word_list.txt", output)
+        self.bridge.close_connection()
+    
+    def two_point_zero_one_B(self):
+        
+        ActionClicker.switchToRemote(2,1)
+	    
+        ActionClicker.doAction("Dial")
+        ActionClicker.doAction("Call")
+    
+        ActionClicker.backToLocal
+		
         time.sleep(5)
         self.io.loadFile(os.getcwd() + "./test-data/weekday1.wav")
         self.io.playRecord(os.getcwd() + "./outputs/test1.wav")

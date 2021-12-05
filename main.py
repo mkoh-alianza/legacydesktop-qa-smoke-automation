@@ -25,13 +25,10 @@ from audio_recognizer import AudioRecognizer
 from constants import *
 from action_clicker import ActionClicker
 
-ActionClicker.doAction('minimize')
-time.sleep(4)
-ActionClicker.doAction('maximize')
 
 agent = TestAgent(WEBSOCKET_ADDRESS)
 
 
 agent.io_setup()
-agent.two_point_zero_one()
+agent.two_point_zero_one_B()
 
