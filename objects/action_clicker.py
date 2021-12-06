@@ -28,7 +28,7 @@ class ActionClicker:
             for line in f:
                 coords.append(eval(line))
         
-        offset = (num / 2 * 40) + 20
+        offset = (-num / 2 * 275) + 137.5
         
         pyautogui.moveTo(coords[0][0], coords[0][1])
         pyautogui.mouseDown(button=coords[0][3])
@@ -37,7 +37,7 @@ class ActionClicker:
 
 
 
-        pyautogui.moveTo(coords[0][0] + 137.5, coords[0][1] - 100)
+        pyautogui.moveTo(coords[0][0] + offset + (275 * pc), coords[0][1] - 100)
         pyautogui.mouseDown(button=coords[0][3])
         pyautogui.mouseUp(button=coords[0][3])
 
