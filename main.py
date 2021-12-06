@@ -29,6 +29,6 @@ from action_clicker import ActionClicker
 agent = TestAgent(WEBSOCKET_ADDRESS)
 
 
-agent.io_setup()
+#agent.io_setup()
 agent.two_point_zero_one_B()
 

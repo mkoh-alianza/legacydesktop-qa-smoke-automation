@@ -30,17 +30,20 @@ class ActionClicker:
         
         offset = (num / 2 * 40) + 20
         
-        
         pyautogui.moveTo(coords[0][0], coords[0][1])
         pyautogui.mouseDown(button=coords[0][3])
         pyautogui.mouseUp(button=coords[0][3])
         sleep(1)
-        
-        pyautogui.moveTo(coords[0][0] - offset + pc * 40, coords[0][1] + 40)
+
+
+
+        pyautogui.moveTo(coords[0][0] + 137.5, coords[0][1] - 100)
         pyautogui.mouseDown(button=coords[0][3])
         pyautogui.mouseUp(button=coords[0][3])
-        
+
+
     def backToLocal():
+        coords = []
         with open(os.getcwd() + './actions/local.txt', 'r') as f:
             for line in f:
                 coords.append(eval(line))

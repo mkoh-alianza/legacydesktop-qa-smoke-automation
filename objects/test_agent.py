@@ -18,7 +18,7 @@ class TestAgent:
         self.bridge = ApiBridge('wss://cpclientapi.softphone.com:9002/counterpath/socketapi/v1')
         self.io = DeviceIO()
         self.io.loadFile(os.getcwd() + "./test-data/weekday1.wav")
-        
+        self.io.setDevices()
 
     def io_setup(self):
     
@@ -55,12 +55,14 @@ class TestAgent:
     
     def two_point_zero_one_B(self):
         
-        ActionClicker.switchToRemote(2,1)
+        ActionClicker.switchToRemote(2,2)
 	    
         ActionClicker.doAction("Dial")
         ActionClicker.doAction("Call")
     
-        ActionClicker.backToLocal
+        ActionClicker.backToLocal()
+		time.Sleep(3)
+        ActionClicker.doAction("Answer")
 		
         time.sleep(5)
         self.io.loadFile(os.getcwd() + "./test-data/weekday1.wav")
@@ -69,4 +71,3 @@ class TestAgent:
         output = AudioRecognizer.work(os.getcwd() + "./outputs/test1.wav")
 
         TextComparer.compareOutputToFile("./test-data/word_list.txt", output)
-        self.bridge.close_connection()
