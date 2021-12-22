@@ -3,9 +3,6 @@ from time import sleep
 import os
 
 class ActionClicker:
-    
-    def __init__(self, source):
-        self.totalEnds
         
     def doAction(action):
         coords =[]
@@ -52,3 +49,8 @@ class ActionClicker:
         pyautogui.mouseDown(button=coords[0][3])
         pyautogui.mouseUp(button=coords[0][3])
         sleep(1)
+
+    def dial(num):
+        for digit in num:
+            ActionClicker.doAction("Dial" + digit)
+        

@@ -1,4 +1,13 @@
 class TextComparer:
+
+    def isBlank(input):
+        if(input == ""):
+            return True
+        
+        else:
+            return False
+        
+        
     def compareOutputToFile(expected, output):
         expText = open(expected, 'r')
         expText = expText.read()

@@ -15,53 +15,24 @@ from action_clicker import ActionClicker
 class TestAgent:
 
     def __init__(self, uri):
+        
         self.bridge = ApiBridge('wss://cpclientapi.softphone.com:9002/counterpath/socketapi/v1')
         self.io = DeviceIO()
-        self.io.loadFile(os.getcwd() + "./test-data/weekday1.wav")
         self.io.setDevices()
 
     def io_setup(self):
     
-        self.bridge.open_connection();
-        
         self.io.setDevices()
-        self.devices = self.bridge.get_device_info()
-        
-        dId = self.devices[WIN_IN_B]
-        self.bridge.set_device(WIN_IN_B, dId, 'output', 'headset')
 
-        dId = self.devices[WIN_OUT_A]
-        self.bridge.set_device(WIN_OUT_A, dId, 'input', 'headset')
-        
-        self.bridge.close_connection()
-     
-
-    def two_point_zero_one(self):
-        '''
-        self.bridge.open_connection();
-        print(self.bridge.place_call(REMOTEEND))
-        '''
-        ActionClicker.doAction("Dial")
-        ActionClicker.doAction("Call")
-        
-        time.sleep(5)
-        self.io.loadFile(os.getcwd() + "./test-data/weekday1.wav")
-        self.io.playRecord(os.getcwd() + "./outputs/test1.wav")
-
-        output = AudioRecognizer.work(os.getcwd() + "./outputs/test1.wav")
-
-        TextComparer.compareOutputToFile("./test-data/word_list.txt", output)
-        self.bridge.close_connection()
     
-    def two_point_zero_one_B(self):
-        
-        ActionClicker.switchToRemote(2,2)
-	    
-        ActionClicker.doAction("Dial")
+    def test_incoming_call(self):
+        time.sleep(5)
+        ActionClicker.switchToRemote(1,0)
+        ActionClicker.dial(END_A);
         ActionClicker.doAction("Call")
     
         ActionClicker.backToLocal()
-		time.Sleep(3)
+        time.sleep(3)
         ActionClicker.doAction("Answer")
 		
         time.sleep(5)
@@ -70,4 +41,103 @@ class TestAgent:
 
         output = AudioRecognizer.work(os.getcwd() + "./outputs/test1.wav")
 
-        TextComparer.compareOutputToFile("./test-data/word_list.txt", output)
+        TextComparer.compareOutputToFile("./test-data/weekday1.txt", output)
+
+        ActionClicker.doAction("EndCall")
+
+    def test_outgoing_call(self):
+        time.sleep(5)
+
+        ActionClicker.dial(END_B);
+        ActionClicker.doAction("Call")
+    
+        time.sleep(2)
+
+        ActionClicker.switchToRemote(1,0)
+
+        ActionClicker.doAction("Answer")
+		
+        ActionClicker.backToLocal()
+        
+        time.sleep(2)
+        self.io.loadFile(os.getcwd() + "./test-data/weekday1.wav")
+        self.io.playRecord(os.getcwd() + "./outputs/test2.wav")
+
+        output = AudioRecognizer.work(os.getcwd() + "./outputs/test2.wav")
+
+        TextComparer.compareOutputToFile("./test-data/weekday1.txt", output)
+
+        ActionClicker.doAction("EndCall")
+
+
+    def test_mute(self):
+        time.sleep(5)
+        
+        ActionClicker.dial(END_B);
+        ActionClicker.doAction("Call")
+    
+        time.sleep(2)
+
+        ActionClicker.switchToRemote(1,0)
+
+        ActionClicker.doAction("Answer")
+		
+        ActionClicker.backToLocal()
+        
+        ActionClicker.doAction("Mute")
+
+        time.sleep(2)
+        self.io.loadFile(os.getcwd() + "./test-data/weekday1.wav")
+        self.io.playRecord(os.getcwd() + "./outputs/mute1.wav")
+
+        output = AudioRecognizer.work(os.getcwd() + "./outputs/mute1.wav")
+        print(TextComparer.isBlank(output))
+
+        ActionClicker.doAction("Mute")
+
+        self.io.loadFile(os.getcwd() + "./test-data/weekday1.wav")
+        self.io.playRecord(os.getcwd() + "./outputs/mute1.wav")
+
+        output = AudioRecognizer.work(os.getcwd() + "./outputs/mute1.wav")
+        TextComparer.compareOutputToFile("./test-data/weekday1.txt", output)
+
+        ActionClicker.doAction("EndCall")
+
+    def test_hold(self):
+        time.sleep(5)
+        
+        ActionClicker.dial(END_B);
+        ActionClicker.doAction("Call")
+    
+        time.sleep(2)
+
+        ActionClicker.switchToRemote(1,0)
+
+        ActionClicker.doAction("Answer")
+		
+        ActionClicker.backToLocal()
+        time.sleep(2)
+
+        ActionClicker.doAction("Hold")
+
+        time.sleep(2)
+        self.io.loadFile(os.getcwd() + "./test-data/weekday1.wav")
+        self.io.playRecord(os.getcwd() + "./outputs/mute1.wav")
+
+        output = AudioRecognizer.work(os.getcwd() + "./outputs/mute1.wav")
+        print(TextComparer.isBlank(output))
+
+        time.sleep(2)
+
+        ActionClicker.doAction("Unhold")
+
+        self.io.loadFile(os.getcwd() + "./test-data/weekday1.wav")
+        self.io.playRecord(os.getcwd() + "./outputs/mute1.wav")
+
+        output = AudioRecognizer.work(os.getcwd() + "./outputs/mute1.wav")
+        TextComparer.compareOutputToFile("./test-data/weekday1.txt", output)
+
+        ActionClicker.doAction("EndCall")
+		
+    def receive_transfer(self):
+        time.sleep(5)
