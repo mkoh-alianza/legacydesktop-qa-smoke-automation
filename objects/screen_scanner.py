@@ -3,12 +3,8 @@ from PIL import Image
 
 def ScreenScanner:
 
-    def __init__(self):
-        self.briaCoords = None
-
-
     def verifyEquals(grab, toFind, start):
-    
+        
         for x in range(0, toFind.width):
             for y in range(0, toFind.height):
                 a = grab.getpixel((x + start[0], y + start[1]))
@@ -17,13 +13,11 @@ def ScreenScanner:
                     if((a[i] - 4 > b[i]) or (a[i] + 4 < b[i])):
                         return False
         
-        return True                    
+        return True
+                    
 
-
-    def checkForImage(self, toFind , area=None):
-        if(self.briaCoords && !area):
-            area = self.briaCoords
-            
+    def checkForImage(toFind , area=None):
+        
         grab = ImageGrab.grab(bbox = area)
         target = Image.open(toFind)
         
@@ -34,8 +28,7 @@ def ScreenScanner:
                     
         return False
 
-
-    def findBria(self):
+    def findBria():
         
         grab = ImageGrab.grab()
         target = Image.open("Title.png")
@@ -50,7 +43,7 @@ def ScreenScanner:
                         found1 = True
                     else:
                         x2y2 = (x + target.width, y + target.height)
-                        self.briaCoords = (x1y1 + x2y2)
                         return x1y1 + x2y2
                     
-    -    return False
+                    
+        return False
