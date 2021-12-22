@@ -1,7 +1,7 @@
 from PIL import ImageGrab
 from PIL import Image
 
-def ScreenScanner:
+class ScreenScanner:
 
     def verifyEquals(grab, toFind, start):
         
@@ -23,7 +23,7 @@ def ScreenScanner:
         
         for x in range(0, grab.width - target.width):
             for y in range(0, grab.height - target.height):
-                if(verifyEquals(grab, target, (x,y))):
+                if(ScreenScanner.verifyEquals(grab, target, (x,y))):
                     return True
                     
         return False

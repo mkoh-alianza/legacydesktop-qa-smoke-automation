@@ -7,8 +7,9 @@ sys.path.append('./objects')
 from constants import *
 from test_agent import TestAgent
 from screen_scanner import ScreenScanner
-
-print(ScreenScanner.checkForImage("presence.png"))
+print("Enter the file name of the png to search for:")
+x = input()
+print(ScreenScanner.checkForImage(x))
 
 '''
 agent = TestAgent(WEBSOCKET_ADDRESS)
