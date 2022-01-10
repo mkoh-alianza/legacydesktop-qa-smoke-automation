@@ -4,18 +4,22 @@ import os
 
 class ActionClicker:
         
-    def doAction(action):
+    def doAction(action, offset=None):
         coords =[]
         with open(os.getcwd() + "./actions/"  + action + '.txt', 'r') as f:
             for line in f:
                 coords.append(eval(line))
         
+        if(offset):
+            diff = offset
+        else:
+            diff = (0,0)
         
         for j in range(0, len(coords)):
             if(j != 0):
                 sleep(coords[j][2])
             
-            pyautogui.moveTo(coords[j][0], coords[j][1])
+            pyautogui.moveTo(coords[j][0] + diff[0], coords[j][1] + diff[1])
             pyautogui.mouseDown(button=coords[j][3])
             pyautogui.mouseUp(button=coords[j][3])
             

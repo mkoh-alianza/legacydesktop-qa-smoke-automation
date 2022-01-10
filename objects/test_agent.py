@@ -11,10 +11,11 @@ from device_io import DeviceIO
 from audio_recognizer import AudioRecognizer
 from constants import *
 from action_clicker import ActionClicker
+from screen_scanner import ScreenScanner
 
 class TestAgent:
 
-    def __init__(self, uri):
+    def __init__(self, uri=None):
         
         self.bridge = ApiBridge(WEBSOCKET_ADDRESS)
         self.io = DeviceIO()
@@ -134,6 +135,59 @@ class TestAgent:
 
         ActionClicker.doAction("EndCall")
 		
+    def speaker_mode(self):
+        ActionClicker.doAction("Speaker")
+        self.test_outgoing_call()
+        ActionClicker.doAction("Headset")
+        
+    def video_start(self):
+        
+        ActionClicker.doAction("Contacts")
+        ActionClicker.doAction("ContSearch")
+        ActionClicker.type(END_B_NAME)
+        ActionClicker.doAction("VideoCall1")
+        
+        ActionClicker.switchToRemote(NUM_ENDS, 0)
+        
+        time.sleep(3)
+        
+        ActionClicker.doAction("VideoAccept")
+        
+        ActionClicker.backToLocal()
+        
+        time.sleep(10)
+        
+        ActionClicker.doAction("Center")
+        
+        time.sleep(1)
+        
+        offset = ScreenScanner.verifyVideo()
+        
+        ActionClicker.doAction("EndVideo")
+        time.sleep(5)
+        ActionClicker.doAction("ClearContactSearch")
+        
+    def video_upgrade(self):
+        time.sleep(5)
+        ActionClicker.switchToRemote(NUM_ENDS,0)
+        ActionClicker.dial(END_A);
+        ActionClicker.doAction("Call")
+    
+        ActionClicker.backToLocal()
+        time.sleep(3)
+        ActionClicker.doAction("Answer")
+        time.sleep(2)
+        ActionClicker.doAction("UpgradeVideo")
+        ActionClicker.switchToRemote(NUM_ENDS,0)
+        ActionClicker.doAction("UpgradeVideo")
+        
+        ActionClicker.backToLocal()
+        time.sleep(8)
+        
+        offset = ScreenScanner.verifyVideo()
+        
+        ActionClicker.doAction("EndVideo")
+        
     def receive_blind(self):
         time.sleep(5)
 

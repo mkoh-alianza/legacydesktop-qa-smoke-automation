@@ -7,12 +7,22 @@ sys.path.append('./objects')
 from constants import *
 from test_agent import TestAgent
 from screen_scanner import ScreenScanner
+from action_clicker import ActionClicker
+
+
+
+
+tester = TestAgent()
+tester.video_start()
+tester.video_upgrade()
+
+'''
 area = ScreenScanner.findBria()
 print (area)
 print("Enter the file name of the png to search for:")
 x = input()
 print(ScreenScanner.checkForImage(x, area))
-
+'''
 
 
 '''
