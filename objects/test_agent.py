@@ -16,18 +16,13 @@ class TestAgent:
 
     def __init__(self, uri):
         
-        self.bridge = ApiBridge('wss://cpclientapi.softphone.com:9002/counterpath/socketapi/v1')
+        self.bridge = ApiBridge(WEBSOCKET_ADDRESS)
         self.io = DeviceIO()
         self.io.setDevices()
-
-    def io_setup(self):
-    
-        self.io.setDevices()
-
     
     def test_incoming_call(self):
         time.sleep(5)
-        ActionClicker.switchToRemote(1,0)
+        ActionClicker.switchToRemote(NUM_ENDS,0)
         ActionClicker.dial(END_A);
         ActionClicker.doAction("Call")
     
@@ -53,7 +48,7 @@ class TestAgent:
     
         time.sleep(2)
 
-        ActionClicker.switchToRemote(1,0)
+        ActionClicker.switchToRemote(NUM_ENDS,0)
 
         ActionClicker.doAction("Answer")
 		
@@ -78,7 +73,7 @@ class TestAgent:
     
         time.sleep(2)
 
-        ActionClicker.switchToRemote(1,0)
+        ActionClicker.switchToRemote(NUM_ENDS,0)
 
         ActionClicker.doAction("Answer")
 		
@@ -106,12 +101,12 @@ class TestAgent:
     def test_hold(self):
         time.sleep(5)
         
-        ActionClicker.dial(END_B);
+        ActionClicker.dial(END_B)
         ActionClicker.doAction("Call")
     
         time.sleep(2)
 
-        ActionClicker.switchToRemote(1,0)
+        ActionClicker.switchToRemote(NUM_ENDS,0)
 
         ActionClicker.doAction("Answer")
 		
@@ -139,5 +134,20 @@ class TestAgent:
 
         ActionClicker.doAction("EndCall")
 		
-    def receive_transfer(self):
+    def receive_blind(self):
         time.sleep(5)
+
+        ActionClicker.switchToRemote(NUM_ENDS,1)
+
+        ActionClicker.dial(END_B)
+        ActionClicker.doAction("Call")
+
+        time.sleep(2)
+        
+        ActionClicker.backToLocal()
+        ActionClicker.switchToRemote(NUM_ENDS,0)
+        ActionClicker.doAction("Answer")
+        
+        time.sleep(2)
+        
+        ActionClicker.blindTransfer(END_A)

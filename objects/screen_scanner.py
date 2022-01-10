@@ -19,7 +19,7 @@ class ScreenScanner:
     def checkForImage(toFind , area=None):
         
         grab = ImageGrab.grab(bbox = area)
-        target = Image.open(toFind)
+        target = Image.open("./ScannerImages/" + toFind)
         
         for x in range(0, grab.width - target.width):
             for y in range(0, grab.height - target.height):
@@ -31,19 +31,19 @@ class ScreenScanner:
     def findBria():
         
         grab = ImageGrab.grab()
-        target = Image.open("Title.png")
+        target = Image.open("./ScannerImages/Title.png")
         found1 = False
         
         for x in range(0, grab.width - target.width):
             for y in range(0, grab.height - target.height):
-                if(verifyEquals(grab, target, (x,y))):
+                if(ScreenScanner.verifyEquals(grab, target, (x,y))):
                     if(found1 == False):
                         x1y1 = (x,y)
-                        target = Image.open("Bottom.png")
+                        target = Image.open("./ScannerImages/Bottom.png")
                         found1 = True
                     else:
                         x2y2 = (x + target.width, y + target.height)
                         return x1y1 + x2y2
                     
                     
-        return False
+        return None
