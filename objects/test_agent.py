@@ -55,8 +55,6 @@ class TestAgent:
 		
         ActionClicker.backToLocal()
         
-
-        
         time.sleep(2)
         self.io.loadFile(os.getcwd() + "./test-data/weekday1.wav")
         self.io.playRecord(os.getcwd() + "./outputs/test2.wav")
@@ -147,20 +145,13 @@ class TestAgent:
         ActionClicker.doAction("Contacts")
         ActionClicker.doAction("ContSearch")
         ActionClicker.type(END_B_NAME)
-        
-        time.sleep(3)
-        
         ActionClicker.doAction("VideoCall1")
-        
-        time.sleep(5)
         
         ActionClicker.switchToRemote(NUM_ENDS, 0)
         
         time.sleep(3)
         
         ActionClicker.doAction("VideoAccept")
-        
-        time.sleep(7)
         
         ActionClicker.backToLocal()
         
@@ -177,34 +168,25 @@ class TestAgent:
         ActionClicker.doAction("ClearContactSearch")
         
     def video_upgrade(self):
-        time.sleep(20)
+        time.sleep(5)
         ActionClicker.switchToRemote(NUM_ENDS,0)
         ActionClicker.dial(END_A);
         ActionClicker.doAction("Call")
-        
-        time.sleep(4)
-        
+    
         ActionClicker.backToLocal()
         time.sleep(3)
         ActionClicker.doAction("Answer")
         time.sleep(2)
-        if(ScreenScanner.checkForImage("p3.png")):
-            print("Status is currently 'on the phone'")
-        
-        time.sleep(3)
-            
         ActionClicker.doAction("UpgradeVideo")
-        time.sleep(3)
         ActionClicker.switchToRemote(NUM_ENDS,0)
-        time.sleep(3)
         ActionClicker.doAction("UpgradeVideo")
-        time.sleep(4)
+        
         ActionClicker.backToLocal()
         time.sleep(8)
         
         offset = ScreenScanner.verifyVideo()
         
-        ActionClicker.doAction("EndVideo")    
+        ActionClicker.doAction("EndVideo")
         
     def receive_blind(self):
         time.sleep(5)
