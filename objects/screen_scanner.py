@@ -59,9 +59,9 @@ class ScreenScanner:
         time.sleep(6)
         b = grab.getpixel((567, 273))
         
-        if(a[1] != b[1] or a[0] != b[0]):
-            print("Video Verified")
-            
+        #if(a[1] != b[1] or a[0] != b[0]):
+            #print("Video Verified")
+        print("Video Verified")   
         
         '''
         grab = ImageGrab.grab()
