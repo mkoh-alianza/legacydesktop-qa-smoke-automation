@@ -13,6 +13,9 @@ from constants import *
 from action_clicker import ActionClicker
 from screen_scanner import ScreenScanner
 
+def do(action):
+        ActionClicker.doAction(action)
+
 class TestAgent:
 
     def __init__(self, uri=None):
@@ -22,9 +25,7 @@ class TestAgent:
         self.io.setDevices()
         self.briaArea = None
         
-    def do(action):
-        ActionClicker.doAction(action)
-
+        
     def test_audio(self):
         self.io.loadFile(os.getcwd() + "./test-data/weekday1.wav")
         self.io.playRecord(os.getcwd() + "./outputs/test1.wav")
