@@ -13,6 +13,9 @@ from constants import *
 from action_clicker import ActionClicker
 from screen_scanner import ScreenScanner
 
+def do(action):
+    ActionClicker.doAction(action)
+
 class TestAgent:
 
     def __init__(self, uri=None):
@@ -20,16 +23,17 @@ class TestAgent:
         self.bridge = ApiBridge(WEBSOCKET_ADDRESS)
         self.io = DeviceIO()
         self.io.setDevices()
-    
+
+        
     def test_incoming_call(self):
         time.sleep(5)
         ActionClicker.switchToRemote(NUM_ENDS,0)
         ActionClicker.dial(END_A);
-        ActionClicker.doAction("Call")
+        do("Call")
     
         ActionClicker.backToLocal()
         time.sleep(3)
-        ActionClicker.doAction("Answer")
+        do("Answer")
 		
         time.sleep(5)
         self.io.loadFile(os.getcwd() + "./test-data/weekday1.wav")
@@ -39,19 +43,19 @@ class TestAgent:
 
         TextComparer.compareOutputToFile("./test-data/weekday1.txt", output)
 
-        ActionClicker.doAction("EndCall")
+        do("EndCall")
 
     def test_outgoing_call(self):
         time.sleep(5)
 
         ActionClicker.dial(END_B);
-        ActionClicker.doAction("Call")
+        do("Call")
     
         time.sleep(2)
 
         ActionClicker.switchToRemote(NUM_ENDS,0)
 
-        ActionClicker.doAction("Answer")
+        do("Answer")
 		
         ActionClicker.backToLocal()
         
@@ -65,24 +69,24 @@ class TestAgent:
 
         TextComparer.compareOutputToFile("./test-data/weekday1.txt", output)
 
-        ActionClicker.doAction("EndCall")
+        do("EndCall")
 
 
     def test_mute(self):
         time.sleep(5)
         
         ActionClicker.dial(END_B);
-        ActionClicker.doAction("Call")
+        do("Call")
     
         time.sleep(2)
 
         ActionClicker.switchToRemote(NUM_ENDS,0)
 
-        ActionClicker.doAction("Answer")
+        do("Answer")
 		
         ActionClicker.backToLocal()
         
-        ActionClicker.doAction("Mute")
+        do("Mute")
 
         time.sleep(2)
         self.io.loadFile(os.getcwd() + "./test-data/weekday1.wav")
@@ -91,7 +95,7 @@ class TestAgent:
         output = AudioRecognizer.work(os.getcwd() + "./outputs/mute1.wav")
         print(TextComparer.isBlank(output))
 
-        ActionClicker.doAction("Mute")
+        do("Mute")
 
         self.io.loadFile(os.getcwd() + "./test-data/weekday1.wav")
         self.io.playRecord(os.getcwd() + "./outputs/mute1.wav")
@@ -99,24 +103,24 @@ class TestAgent:
         output = AudioRecognizer.work(os.getcwd() + "./outputs/mute1.wav")
         TextComparer.compareOutputToFile("./test-data/weekday1.txt", output)
 
-        ActionClicker.doAction("EndCall")
+        do("EndCall")
 
     def test_hold(self):
         time.sleep(5)
         
         ActionClicker.dial(END_B)
-        ActionClicker.doAction("Call")
+        do("Call")
     
         time.sleep(2)
 
         ActionClicker.switchToRemote(NUM_ENDS,0)
 
-        ActionClicker.doAction("Answer")
+        do("Answer")
 		
         ActionClicker.backToLocal()
         time.sleep(2)
 
-        ActionClicker.doAction("Hold")
+        do("Hold")
 
         time.sleep(2)
         self.io.loadFile(os.getcwd() + "./test-data/weekday1.wav")
@@ -127,7 +131,7 @@ class TestAgent:
 
         time.sleep(2)
 
-        ActionClicker.doAction("Unhold")
+        do("Unhold")
 
         self.io.loadFile(os.getcwd() + "./test-data/weekday1.wav")
         self.io.playRecord(os.getcwd() + "./outputs/mute1.wav")
@@ -135,22 +139,22 @@ class TestAgent:
         output = AudioRecognizer.work(os.getcwd() + "./outputs/mute1.wav")
         TextComparer.compareOutputToFile("./test-data/weekday1.txt", output)
 
-        ActionClicker.doAction("EndCall")
+        do("EndCall")
 		
     def speaker_mode(self):
-        ActionClicker.doAction("Speaker")
+        do("Speaker")
         self.test_outgoing_call()
-        ActionClicker.doAction("Headset")
+        do("Headset")
         
     def video_start(self):
         
-        ActionClicker.doAction("Contacts")
-        ActionClicker.doAction("ContSearch")
+        do("Contacts")
+        do("ContSearch")
         ActionClicker.type(END_B_NAME)
         
         time.sleep(3)
         
-        ActionClicker.doAction("VideoCall1")
+        do("VideoCall1")
         
         time.sleep(5)
         
@@ -158,7 +162,7 @@ class TestAgent:
         
         time.sleep(3)
         
-        ActionClicker.doAction("VideoAccept")
+        do("VideoAccept")
         
         time.sleep(7)
         
@@ -166,45 +170,45 @@ class TestAgent:
         
         time.sleep(10)
         
-        ActionClicker.doAction("Center")
+        do("Center")
         
         time.sleep(1)
         
         offset = ScreenScanner.verifyVideo()
         
-        ActionClicker.doAction("EndVideo")
+        do("EndVideo")
         time.sleep(5)
-        ActionClicker.doAction("ClearContactSearch")
+        do("ClearContactSearch")
         
     def video_upgrade(self):
         time.sleep(20)
         ActionClicker.switchToRemote(NUM_ENDS,0)
         ActionClicker.dial(END_A);
-        ActionClicker.doAction("Call")
+        do("Call")
         
         time.sleep(4)
         
         ActionClicker.backToLocal()
         time.sleep(3)
-        ActionClicker.doAction("Answer")
+        do("Answer")
         time.sleep(2)
         if(ScreenScanner.checkForImage("p3.png")):
             print("Status is currently 'on the phone'")
         
         time.sleep(3)
             
-        ActionClicker.doAction("UpgradeVideo")
+        do("UpgradeVideo")
         time.sleep(3)
         ActionClicker.switchToRemote(NUM_ENDS,0)
         time.sleep(3)
-        ActionClicker.doAction("UpgradeVideo")
+        do("UpgradeVideo")
         time.sleep(4)
         ActionClicker.backToLocal()
         time.sleep(8)
         
         offset = ScreenScanner.verifyVideo()
         
-        ActionClicker.doAction("EndVideo")    
+        do("EndVideo")    
         
     def receive_blind(self):
         time.sleep(5)
@@ -212,13 +216,13 @@ class TestAgent:
         ActionClicker.switchToRemote(NUM_ENDS,1)
 
         ActionClicker.dial(END_B)
-        ActionClicker.doAction("Call")
+        do("Call")
 
         time.sleep(2)
         
         ActionClicker.backToLocal()
         ActionClicker.switchToRemote(NUM_ENDS,0)
-        ActionClicker.doAction("Answer")
+        do("Answer")
         
         time.sleep(2)
         
