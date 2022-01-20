@@ -58,4 +58,10 @@ class ActionClicker:
         ActionClicker.doAction("DialPad")
         for digit in num:
             ActionClicker.doAction("Dial" + digit)
+            
+    def transfer(num, transfer):
+       ActionClicker.doAction("TransferStartDial")
+       ActionClicker.type(num)
+       ActionClicker.doAction(transfer)
+       ActionClicker.doAction("SendTransfer")
         
