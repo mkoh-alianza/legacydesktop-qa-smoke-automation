@@ -329,6 +329,8 @@ class TestAgent:
     def verifyPresence(self):
         time.sleep(5)
 
+        ScreenScanner.checkForImage("p2.png")
+
         ActionClicker.dial(END_B);
         do("Call")
     
@@ -339,5 +341,30 @@ class TestAgent:
         do("Answer")
 		
         ActionClicker.backToLocal()
+
+        ScreenScanner.checkForImage("p3.png")
         
         ActionClicker.endCall()
+        
+    def createContact(self, testNo):
+        time.sleep(5)
+        
+        do("Contacts")
+        do("AddContact")
+        do("ContactDisplay")
+        ActionClicker.type("Display Test" + TestNo)
+        do("ContactFirstName")
+        ActionClicker.type(TestNo+" First")
+        do("ContactLastName")
+        ActionClicker.type(TestNo+" Last")
+        do("ContactSoftphone")
+        ActionClicker.type("1112")
+        do("ContactAddNum")
+        do("SaveContact")
+        
+        do("ContSearch")
+        ActionClicker.type(TestNo)
+        
+        ScreenScnaner.checkForImage("ContactExists")
+        
+        do("ClearContactSearch")
