@@ -1,0 +1,66 @@
+All actions are recorded with bria in the top left of the screen, the window as small as possible.
+
+Debugging Actions:
+
+baseClick - Clicks in the top left corner, can be used to escape the autoclicker if there is an error.
+Center - Clicks roughly in the center of the screen, can be used to select video window.
+Local - Used by action clicker when switching between ends.
+Remote - Used by action clicker when switching between ends.
+Minimize - Clicks on the bria minimize tab
+Maximize - Clicks on the bria taskbar icon.
+
+Basic Call Action:
+
+DialPad - Clicks on the dialpad tab.
+DialX - Clicks on the number 'X' in the dialpad, supports 0-9.
+DialHash - Clicks on the dialpad 'hashtag'.
+DialStar - Clicks on the dialpad 'star'.
+Call - Clicks on the call button, calling the dialed number.
+Answer - Clicks the answer button on the top incoming call window.
+Hold - clicks on the top call hold button
+Unhold - clicks on the top call unhold button (assuming it is held)
+Mute - Clicks on top call's mute button
+Headset - Sets bria to headset mode.
+Speaker - Sets bria to speaker mode.
+TransferStartDial - Clicks on the transfer button then on the dial area (for top call)
+AttendedTransfer - Clicks on the transfer options and selects "Call first" for top call. (Transfer window must be open, number dialed)
+BlindTransfer - Clicks on the transfer options and selects "Transfer now" for top call. (Transfer window must be open, number dialed)
+EndCall - Clicks on the end call button for the top call.
+
+EndVideo - Clicks on the end call button for the video call.
+UpgradeVideo - Upgrades the top call to a video call by clicking on the video button.
+VideoAccept - Answers an incoming call with video
+
+
+History:
+
+HistoryTab - Clicks on history tab
+HistoryCall1 - Calls the end that is at the top of call History. (Must be in history tab)
+
+
+Contacts:
+
+Contacts - Clicks on the contacts tab.
+ClearContactSearch - Clicks on the X to clear the search bar, if in the contacts tab.
+VideoCall1 - Calls the top contact with video. (assuming in contacts tab)
+
+
+
+Helper Functions:
+These functions can be called from the action clicker to help perform certain actions easier
+
+ActionClicker.dial(String num) - 
+Dials a the number given on the dialpad.
+
+ActionClicker.transfer(String num, String transfer) - 
+Transfers the top call to the num. Uses the action given by 'transfer' to chose the transfer type (for example "BlindTransfer")
+
+ActionClicker.switchToRemote(int num, int pc) - 
+Switches to the remote end given by 'pc'. Num is the total number of remote desktop'ed ends.
+*Note that the remote desktop must be on the leftmost end of the taskbar
+
+ActionClicker.backToLocal() - 
+If on remote, clicks on the bar to switch back to local end.
+
+ActionClicker.type(Srting txt) - 
+Types the given string into the keyboard (one character at a time, 0.25 seconds in between)

@@ -36,6 +36,7 @@ class TestAgent:
 
     def test_incoming_call(self):
         time.sleep(5)
+        
         ActionClicker.switchToRemote(NUM_ENDS,0)
         ActionClicker.dial(END_A);
         do("Call")
@@ -200,7 +201,8 @@ class TestAgent:
         offset = ScreenScanner.verifyVideo()
         
         do("EndVideo")
-        
+      
+      #TODO must add logic for attended transfers
     def receive_transfer(self, transferType):
         time.sleep(5)
 
@@ -308,7 +310,7 @@ class TestAgent:
     def historyCall(self):
         time.sleep(5)
         
-        do("History")
+        do("HistoryTab")
         do("HistoryCall1")
         
         ActionClicker.switchToRemote(NUM_ENDS, 0)
@@ -368,3 +370,5 @@ class TestAgent:
         ScreenScnaner.checkForImage("ContactExists")
         
         do("ClearContactSearch")
+        
+    def 
