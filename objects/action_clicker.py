@@ -3,7 +3,9 @@ from time import sleep
 import os
 
 class ActionClicker:
-        
+    
+    
+    '''Does the given action, the offset is from the top left, see 'action definitions' file for more info '''
     def doAction(action, offset=None):
         coords =[]
         with open(os.getcwd() + "./actions/"  + action + '.txt', 'r') as f:
@@ -23,6 +25,7 @@ class ActionClicker:
             pyautogui.mouseDown(button=coords[j][3])
             pyautogui.mouseUp(button=coords[j][3])
             
+    ''''''       
     def switchToRemote(num, pc):
         coords = []
         with open(os.getcwd() + './actions/remote.txt', 'r') as f:
@@ -40,8 +43,11 @@ class ActionClicker:
         pyautogui.mouseDown(button=coords[0][3])
         pyautogui.mouseUp(button=coords[0][3])
 
-    def type(txt):
-        pyautogui.write(txt, interval = 0.25)
+    def type(txt, time=0.25):
+        pyautogui.write(txt, interval = time)
+
+    def pressKey(key):
+        pyautogui.press(key)
 
     def backToLocal():
         coords = []
@@ -53,7 +59,13 @@ class ActionClicker:
         pyautogui.mouseDown(button=coords[0][3])
         pyautogui.mouseUp(button=coords[0][3])
         sleep(1)
-
+    
+    def clickAt(x, y):
+        pyautogui.moveTo(x, y)
+        pyautogui.mouseDown('leftt')
+        pyautogui.mouseUp('left')
+    
+    
     def dial(num):
         ActionClicker.doAction("DialPad")
         for digit in num:

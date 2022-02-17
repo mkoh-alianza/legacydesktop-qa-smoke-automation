@@ -18,11 +18,23 @@ class ScreenScanner:
         
         return True
                     
-
+    
+    def findImage(toFind, area=None):
+        
+        grab = ImageGrab.grab(bbox = area)
+        target = Image.open("./ScannerImages/" + toFind + ".png")
+        
+        for x in range(0, grab.width - target.width):
+            for y in range(0, grab.height - target.height):
+                if(ScreenScanner.verifyEquals(grab, target, (x,y))):
+                    return (x,y)
+                    
+        return False
+    
     def checkForImage(toFind , area=None):
         
         grab = ImageGrab.grab(bbox = area)
-        target = Image.open("./ScannerImages/" + toFind)
+        target = Image.open("./ScannerImages/" + toFind + ".png")
         
         for x in range(0, grab.width - target.width):
             for y in range(0, grab.height - target.height):

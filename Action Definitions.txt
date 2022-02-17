@@ -45,6 +45,11 @@ ClearContactSearch - Clicks on the X to clear the search bar, if in the contacts
 VideoCall1 - Calls the top contact with video. (assuming in contacts tab)
 
 
+Presence:
+
+SetPresenceBusy - Sets presence to busy
+SetPresenceAvailable - Sets presence to available
+
 
 Helper Functions:
 These functions can be called from the action clicker to help perform certain actions easier

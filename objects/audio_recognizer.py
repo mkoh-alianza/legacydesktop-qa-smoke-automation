@@ -26,6 +26,18 @@ class AudioRecognizer:
 			print("Could not request results from Google Speech Recognition service; {0}".format(e))	
 			return ""
 			
+	def findNewestRecording(path):
+		biggest = "0"
+		name = "0"
+		for file in os.listdir(path):
+			if file.endswith(".wav"):
+				test = ''.join(file.split('_'))[:-4]
+			if(int(test) > int(biggest)):
+				biggest = test
+				name = file
+		return name
+
+
 if __name__ == '__main__':
 	print("Enter the name of the audio file to analyze: ")
 	filename = input()
