@@ -13,7 +13,7 @@ from constants import *
 from action_clicker import ActionClicker
 from screen_scanner import ScreenScanner
 from uem_bridge import UemBridge
-
+#login'er 
 
 def do(action):
         ActionClicker.doAction(action)
@@ -203,7 +203,6 @@ class TestAgent:
         offset = ScreenScanner.verifyVideo()
         
         do("EndVideo")
-      
       #TODO must add logic for attended transfers
     def receive_transfer(self, transferType):
         time.sleep(5)
@@ -219,7 +218,12 @@ class TestAgent:
         ActionClicker.switchToRemote(NUM_ENDS,0)
         do("Answer")
         
-        time.sleep(2)
+        time.sleep(4)
+        
+        ActionClicker.backToLocal()
+        ActionClicker.switchToRemote(NUM_ENDS,1)
+        
+        time.sleep(4)
         
         ActionClicker.transfer(END_A, transferType)
         
@@ -227,9 +231,9 @@ class TestAgent:
         
         time.sleep(3)
         
-        do("Answer")
+        do("AnswerRegular")
         
-        self.testAudio()
+        self.test_audio()
         
         do("EndCall")
         
@@ -244,22 +248,28 @@ class TestAgent:
         time.sleep(2)
         
         ActionClicker.backToLocal()
+        
+        time.sleep(2)
+        do("Answer")
+        
         ActionClicker.switchToRemote(NUM_ENDS,0)
         ActionClicker.dial(END_A)
         do("Call")
         ActionClicker.backToLocal()
         
         time.sleep(2)
-        do("Answer")
+        do("Answer2")
         time.sleep(2)
         
-        do("Swap2")
-        
-        self.test_audio(self)
+        self.test_audio()
         
         do("Swap1")
         
-        self.test_audio(self)
+        #self.test_audio()
+        
+        do("Swap2")
+        
+        self.test_audio()
         
         do("EndCall")
         

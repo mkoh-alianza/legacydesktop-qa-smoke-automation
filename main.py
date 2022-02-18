@@ -1,61 +1,64 @@
 import sys
-
+import os
 
 sys.path.append('./objects')
 from constants import *
 from test_agent import TestAgent
 from screen_scanner import ScreenScanner
 from action_clicker import ActionClicker
+from device_io import DeviceIO
 
 
 ts = TestAgent()
-
-ts.test_incoming_call()
-
-ts.test_outgoing_call()
-
-ts.test_mute()
-
-ts.test_hold()
-
-ts.speaker_mode()
-
-ts.video_start()
-
-ts.video_upgrade()
-
-ts.recieve_transfer()
-
+#ActionClicker.doAction("EndCall")
+x = input()
+print("Test Incoming")
+#ts.test_incoming_call()
+print("Test Outgoing")
+#ts.test_outgoing_call()
+print("TestMute")
+#ts.test_mute()
+print("TestHold")
+#ts.test_hold()
+print("TestSpeaker")
+#ts.speaker_mode()
+print("TestVideo")
+#ts.video_start()
+print("TestUpgrade")
+#ts.video_upgrade()
+print("Test Transfer")
+ts.receive_transfer("BlindTransfer")
+print("Test CallSwap")
 ts.call_swap()
-
+print("TestMWI")
 ts.MWI()
-
+print("Test Contact")
 ts.contactCall()
-
+print("Test historycall")
 ts.historyCall()
-
+print("Test presence")
 ts.verifyPresence()
-
+print("TestContact")
 ts.createContact(1)
-
+print("test Missed")
 ts.verifyMissedCall()
-
+print("test presecen")
 ts.contactPresence()
-
+print("tset IM")
 ts.reveiveIM()
-
+print("test recording")
 ts.call_recording()
-
+print("Test Log")
 ts.send_log(1)
-
+print("test portal")
 ts.check_user_portal()
-
+print("test uem")
 ts.check_uem_vqm()
-
+print("test analytics")
 ts.check_uem_analytics()
-
+print("Test chatrom1")
 ts.private_chatroom()
-
+print("Test Chatroom2")
 ts.public_chatroom()
-
+print("Test Screenshare")
 ts.host_screen_share()

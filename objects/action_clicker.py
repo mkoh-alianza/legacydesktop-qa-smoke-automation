@@ -75,5 +75,5 @@ class ActionClicker:
        ActionClicker.doAction("TransferStartDial")
        ActionClicker.type(num)
        ActionClicker.doAction(transfer)
-       ActionClicker.doAction("SendTransfer")
+       
         
