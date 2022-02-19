@@ -9,7 +9,9 @@ import psutil
 # pip install pywin32
 import win32gui
 import win32con
+import win32com.shell.shell as shell 
 import re
+import shutil
 import credentials
 
 
@@ -192,15 +194,107 @@ class Login:
 
 
 
+
+class Installer: 
+
+    def __init__(self, brandIndex = 0):
+        self.keyboard = Controller()
+        self.os = os.name
+        brandTypes = ["Bria Enterprise", "Cymbus"]
+        self.brand = brandTypes[brandIndex]
+        if brandIndex == 0:
+            self.path = '"C:\Program Files (x86)\CounterPath\Bria Enterprise\BriaEnterprise.exe"'
+        elif brandIndex == 1: 
+            self.path = '"C:\Program Files (x86)\Cymbus\Cymbus\cymbus.exe"'
+
+
+    def clearCache(self):
+        if self.os == "nt": 
+            if self.brand == "Cymbus":
+                CymbusTemp = os.path.expandvars(r'%APPDATA%\..\Local\Temp\Cymbus') 
+                if os.path.exists(CymbusTemp):
+                    shutil.rmtree(CymbusTemp)
+                    print("removed " + CymbusTemp)
+                CymbusRoaming = os.path.expandvars(r'%APPDATA%\Cymbus')
+                if os.path.exists(CymbusRoaming):
+                    shutil.rmtree(CymbusRoaming)
+                    print("removed " + CymbusRoaming)
+            else: 
+                EnterpriseTemp = os.path.expandvars(r'%APPDATA%\..\Local\Temp\CounterPath Corporation')
+                if os.path.exists(EnterpriseTemp):
+                    shutil.rmtree(EnterpriseTemp)
+                    print("removed " + EnterpriseTemp)
+                EnterpriseRoaming = os.path.expandvars(r'%APPDATA%\CounterPath')
+                if os.path.exists(EnterpriseRoaming):
+                    shutil.rmtree(EnterpriseRoaming)
+                    print("removed " + EnterpriseRoaming)
+                EnterpriseRoaming2 = os.path.expandvars(r'%APPDATA%\CounterPath Corporation')
+                if os.path.exists(EnterpriseRoaming2):
+                    shutil.rmtree(EnterpriseRoaming2)
+                    print("removed " + EnterpriseRoaming2)
+        elif self.os == "posix": 
+        # ------TODO------ delete cache for mac
+            print("")
+    
+    def uninstall(self):
+    # Search through processes and terminate it 
+        print("Searching through the process to terminate...")
+        pidsList = psutil.pids()
+        
+        if self.brand == 'Cymbus':
+            client_proc_name = 'cymbus.exe'
+            command = 'wmic product where name="Cymbus" call uninstall'
+        else: 
+            client_proc_name = 'BriaEnterprise.exe'
+            command = 'wmic product where name="Bria Enterprise" call uninstall'
+
+        for pid in pidsList:
+            try:
+                p = psutil.Process(pid)
+                if(p.name() == client_proc_name):
+                    print("Process found, terminating process ID = " + str(pid))
+                    p.terminate()
+            except:
+                print("Bypassing Access Exception...")
+
+        time.sleep(5)
+        print("Uninstalling " + self.brand + "...")
+        if self.os == "nt":
+            shell.ShellExecuteEx(lpVerb='runas', lpFile='cmd.exe', lpParameters='/c '+ command)
+        time.sleep(20)
+
+
+    def install(self):
+        print("Installing " + self.brand + "...")
+        # ------TODO------ Change how we get this file path, it's hardcoded now since we don't have gui
+        if self.os == "nt":
+            if self.brand == "Cymbus":
+                command = r"C:\Users\QA\Downloads\Builds\Cymbus_6.5.3_QA_109927.msi"
+            else:
+                command = r"C:\Users\QA\Downloads\Builds\Bria_Enterprise_6.5.3_QA_109929.msi"
+            shell.ShellExecuteEx(lpVerb='runas', lpFile='cmd.exe', lpParameters='/c msiexec /i '+ command)
+            time.sleep(20)
+
+
+    def cleanInstall(self):
+        self.clearCache()
+        self.uninstall()
+
+
 if __name__ == '__main__':
-    login = Login(0, credentials.vccs[0])
-    login.setup()
-    time.sleep(12)
-    login.logout()
+    # login = Login(0, credentials.vccs[0])
+    # login.setup()
+    # time.sleep(12)
+    # login.logout()
 
-    time.sleep(10)
+    # time.sleep(10)
 
-    login = Login(0, credentials.ptt[1])
-    login.setup()
-    time.sleep(12)
-    login.close()
+    # login = Login(0, credentials.ptt[1])
+    # login.setup()
+    # time.sleep(12)
+    # login.close()
+    
+    
+    installer = Installer(1)
+    installer.uninstall()
+    installer.install()
