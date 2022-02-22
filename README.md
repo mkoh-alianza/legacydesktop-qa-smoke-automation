@@ -1,3 +1,50 @@
+Steps to setup:
+
+To set up the cable and windows:
+
+1. Download and install the attached VC Cables (You will notice there is a cable A and cable B, we will need both of them). The cables will need to be installed on both ends.
+You will also need to install Python and pip, but you may already have those.
+
+2. Install the product you wish to test
+
+3. Open remote desktop. Before you connect to the remote end, click on ‘Show Options’ in the remote desktop window. Then go to Local Resources->Remote Audio and set it to ‘Play on remote computer’. (You should only need to do this the first time)
+Then, connect to the remote end.
+
+4. Open up Bria on both ends. Go to Softphone->Preferences->Devices and uncheck the ‘Enable echo cancellation’ box on both ends.
+
+5. On the main end, set Speaker to ‘Cable-B Input’ and Microphone to ‘Cable-A Output’.
+On the remote end, set Speaker to ‘Cable-A input’ and Microphone to ‘Cable-A Output’.
+
+6. Position the Bria window in the top left and put Bria, then the remote desktop at the front of your taskbar (See screenshot). Different screen resolutions have different sizes for these, so you may have to move stuff to different positions if the clicks aren’t clicking in the right places. 
+
+All of the external setup is complete, now we need to setup the code itself.
+
+
+To setup the code
+
+1. Download the GitHub repository onto the main end. (https://github.com/AlianzaQA/Smoke-Client-Automation)
+
+2. Open an command prompt in the folder where the code has been downloaded.
+
+3. You can create a virtual environment using the command: ‘python -m venv env’ and switch into it using ‘env\scripts\activate.bat’.
+
+4. Use pip install -r requirements.txt to install all of the required packages.
+
+All of the code has now been setup, here is how to run.
+
+
+To run the code
+
+1. Open a command prompt where the repo is downloaded.
+
+2. Enter a virtual environment using ‘python -m venv env’.
+
+3. Use the command ‘python main.py’ to run the testing code in ‘main.py’.
+
+It should begin with the tests.
+
+
+
 #Note
 Remember to go to Prefrences->Application->Security and set API access to "Allow Access Always"
 When connecting remote desktop, before connecting go to More Options->Local Resources->Remote Audio
