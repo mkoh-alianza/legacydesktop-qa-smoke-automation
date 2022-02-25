@@ -2,7 +2,7 @@ Steps to setup:
 
 To set up the cable and windows:
 
-1. Download and install the attached VC Cables (You will notice there is a cable A and cable B, we will need both of them). The cables will need to be installed on both ends.
+1. Download and install theVC Cables (You will notice there is a cable A and cable B, we will need both of them). The cables will need to be installed on both ends.
 You will also need to install Python and pip, but you may already have those.
 
 2. Install the product you wish to test
@@ -15,7 +15,7 @@ Then, connect to the remote end.
 5. On the main end, set Speaker to ‘Cable-B Input’ and Microphone to ‘Cable-A Output’.
 On the remote end, set Speaker to ‘Cable-A input’ and Microphone to ‘Cable-A Output’.
 
-6. Position the Bria window in the top left and put Bria, then the remote desktop at the front of your taskbar (See screenshot). Different screen resolutions have different sizes for these, so you may have to move stuff to different positions if the clicks aren’t clicking in the right places. 
+6. Position the Bria window in the top left and put Bria, then the remote desktop at the front of your taskbar. Different screen resolutions have different sizes for these, so you may have to move stuff to different positions if the clicks aren’t clicking in the right places. 
 
 All of the external setup is complete, now we need to setup the code itself.
 

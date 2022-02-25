@@ -15,7 +15,7 @@ class UemBridge:
         self.password = password
         self.startTime = str(int(time.time() * 1000))
         self.cookies = ''
-        print(self.startTime)
+       
     '''======================================================================
                                 HANDLING CONNECTIONS
     ========================================================================='''

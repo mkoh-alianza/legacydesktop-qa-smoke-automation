@@ -25,7 +25,7 @@ class TestAgent:
         self.bridge = ApiBridge(WEBSOCKET_ADDRESS)
         self.io = DeviceIO()
         self.io.setDevices()
-        self.briaArea = None
+        self.briaArea = ScreenScanner.findBria()
         self.uem = UemBridge(UEM_ADDRESS, SRETTO_USERNAME, SRETTO_PASSWORD)
         
     def test_audio(self):
@@ -277,6 +277,7 @@ class TestAgent:
         
         do("EndCall")
         
+    #@TODO, fix this, not testing the right thing    
     def MWI(self):
         time.sleep(5)
 
@@ -291,14 +292,16 @@ class TestAgent:
 		
         ActionClicker.backToLocal()
         
-        time.sleep(2)
+        time.sleep(6)
         
-        screen_scanner.checkForImage("MWI", self.briaArea)
+        print(ScreenScanner.checkForImage("MWI", self.briaArea))
         
         do("EndCall")
 
     
     def contactCall(self):
+        time.sleep(5)
+        
         do("Contacts")
         do("ContSearch")
         ActionClicker.type(END_B_NAME)
@@ -312,7 +315,7 @@ class TestAgent:
         
         ActionClicker.backToLocal()
         
-        self.testAudio()
+        self.test_audio()
 
         do("EndCall")
         
@@ -335,7 +338,7 @@ class TestAgent:
                 
         time.sleep(1)
         
-        self.testAudio()
+        self.test_audio()
         
         do("EndCall")
         
@@ -343,7 +346,7 @@ class TestAgent:
     def verifyPresence(self):
         time.sleep(5)
 
-        ScreenScanner.checkForImage("p2")
+        print(ScreenScanner.checkForImage("p2"))
 
         ActionClicker.dial(END_B);
         do("Call")
@@ -356,9 +359,9 @@ class TestAgent:
 		
         ActionClicker.backToLocal()
 
-        ScreenScanner.checkForImage("p3")
+        print(ScreenScanner.checkForImage("p3"))
         
-        ActionClicker.endCall()
+        do("EndCall")
         
     def createContact(self, testNo):
         time.sleep(5)
@@ -366,38 +369,38 @@ class TestAgent:
         do("Contacts")
         do("AddContact")
         do("ContactDisplay")
-        ActionClicker.type("Display Test" + TestNo)
+        ActionClicker.type("Display Test " + str(testNo))
         do("ContactFirstName")
-        ActionClicker.type(TestNo+" First")
+        ActionClicker.type(str(testNo) + " First")
         do("ContactLastName")
-        ActionClicker.type(TestNo+" Last")
+        ActionClicker.type(str(testNo) +" Last")
         do("ContactSoftphone")
-        ActionClicker.type("1112")
+        ActionClicker.type("1112123124")
         do("ContactAddNum")
         do("SaveContact")
         
         do("ContSearch")
-        ActionClicker.type(TestNo)
+        ActionClicker.type(str(testNo))
         
-        ScreenScnaner.checkForImage("ContactExists")
+        print(ScreenScanner.checkForImage("ContactExists"))
         
         do("ClearContactSearch")
         
     def verifyMissedCall(self):
         time.sleep(5)
-        
+        do("HistoryTab")
         do("Dialpad")
         
         ActionClicker.switchToRemote(NUM_ENDS, 0)
         
-        ActionClicker.dial(END_B);
+        ActionClicker.dial(END_A);
         do("Call")
         
         ActionClicker.backToLocal();
         
         time.sleep(20)
         
-        ScreenScanner.checkForImage("1MissedCall")
+        print(ScreenScanner.checkForImage("1MissedCall"))
         
         
     def contactPresence(self):
@@ -413,7 +416,7 @@ class TestAgent:
         do("ContSearch")
         ActionClicker.type(END_B_NAME)
         
-        ScreenScanner.checkForImage("ContactBusyPresence")
+        print(ScreenScanner.checkForImage("ContactBusyPresence"))
         
         ActionClicker.switchToRemote(NUM_ENDS, 0)
         
@@ -421,16 +424,22 @@ class TestAgent:
         
         ActionClicker.backToLocal()
         
+        do("ClearContactSearch")
+        
     def receiveIM(self):
         time.sleep(5)
         
         ActionClicker.switchToRemote(NUM_ENDS, 0)
         
-        do("GoToMessageSearch")
+        #do("GoToMessageSearch")
+        do("Contacts")
+        do("ContSearch")
         
         ActionClicker.type(END_A_NAME)
         
-        do("MessageTopIMResult")
+        do("MessageTopContact")
+        
+        #do("MessageTopIMResult")
         
         ActionClicker.type("test", time=0.1)
         ActionClicker.pressKey('enter')
@@ -438,6 +447,8 @@ class TestAgent:
         ActionClicker.pressKey('enter')
         ActionClicker.type("test", time=0.1)
         ActionClicker.pressKey('enter')
+        
+        do("ClearContactSearch")
         
         ActionClicker.backToLocal()
         time.sleep(1)
@@ -447,6 +458,8 @@ class TestAgent:
         time.sleep(1)
         
         print(ScreenScanner.checkForImage("IMAlert"))
+        
+        do("ClearContactSearch")
         
     def call_recording(self):
         time.sleep(5)

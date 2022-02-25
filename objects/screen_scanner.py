@@ -58,6 +58,7 @@ class ScreenScanner:
                         found1 = True
                     else:
                         x2y2 = (x + target.width, y + target.height)
+                        print("ScreenScanner has found Bria")
                         return x1y1 + x2y2
                     
                     
