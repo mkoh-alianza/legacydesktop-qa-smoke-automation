@@ -26,3 +26,18 @@ ptt = [
         ["ptt0008@imap.mobilevoiplive.com", "ptt0008"],
         ["ptt0009@imap.mobilevoiplive.com", "ptt0009"],
       ]
+
+amyqa = [
+        ['amyqa1@cymbusdevqatesting1', '1234'],
+        ['amyqa2@cymbusdevqatesting1', '1234'],
+        ['amyqa3@cymbusdevqatesting1', '1234'],
+        ['amyqa4@cymbusdevqatesting1', '1234']
+]
+
+# Change these 
+kyleqa = [
+        ['kyleqa1@cymbusdevqatesting1', '1234'],
+        ['kyleqa2@cymbusdevqatesting1', '1234'],
+        ['kyleqa3@cymbusdevqatesting1', '1234'],
+        ['kyleqa4@cymbusdevqatesting1', '1234']
+]
