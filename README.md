@@ -50,6 +50,7 @@ Remember to go to Prefrences->Application->Security and set API access to "Allow
 When connecting remote desktop, before connecting go to More Options->Local Resources->Remote Audio
 
 #$Current Project Overview
+
 ##Main
 Currently just initilizes an 'Agent', which has access to devices (Device-io), API (API_Bridge) and auto-clicker actions (Action Clicker). This 'agent' is what runs the programmed tests.
 
