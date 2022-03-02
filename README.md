@@ -45,7 +45,7 @@ It should begin with the tests.
 
 
 
-<h2>Note</h2>
+<h3>Note</h3>
 Remember to go to Prefrences->Application->Security and set API access to "Allow Access Always"
 When connecting remote desktop, before connecting go to More Options->Local Resources->Remote Audio
 
@@ -71,7 +71,7 @@ Another agent component 'SpeechRecognition' libary to recognize and list out tex
 <h3>Text Comparison</h3>
 Used by the audio recognizer to compare two sections of text (expected vs actual) and print a status report containing the differences.
 
-<h3>Unused Sound Analysis</h3>
+<h2>Unused Sound Analysis</h2>
 
 <h3>Frequency Analyzer</h3>
 Used to determine the frequency of a waveform. Used to test sound quality. Currently unused.
