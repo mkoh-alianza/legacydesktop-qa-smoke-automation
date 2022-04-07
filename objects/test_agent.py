@@ -29,7 +29,14 @@ class TestAgent:
         self.io.setDevices()
         self.briaArea = ScreenScanner.findBria()
         self.uem = UemBridge(UEM_ADDRESS, SRETTO_USERNAME, SRETTO_PASSWORD)
-        
+
+    def do(action):
+        ActionClicker.doAction(action)
+    def wait(tim):
+        time.sleep(tim + 4)
+    def find(img):
+        ScreenScanner.checkForImage(img, self.briaArea)
+    
     def test_audio(self):
         self.io.loadFile(os.getcwd() + "./test-data/weekday1.wav")
         self.io.playRecord(os.getcwd() + "./outputs/test1.wav")
