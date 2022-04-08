@@ -1,9 +1,10 @@
 WIN_OUT_A = "CABLE-A Output (VB-Audio Cable A)"
 WIN_IN_B = "CABLE-B Input (VB-Audio Cable B)"
-END_A = "5555551008"
-END_B = "5555551007"
+END_A = "7036"
+END_B = "7038"
 NUM_ENDS = 2
-END_B_NAME = "PCR perf"
+END_A_NAME = "kyle qa5"
+END_B_NAME = "kyle qa7"
 RECORDING_PATH = r"C:\Users\User\OneDrive\Documents"
 
 WEBSOCKET_ADDRESS = 'wss://cpclientapi.softphone.com:9002/counterpath/socketapi/v1'

@@ -23,7 +23,6 @@ class DeviceIO:
     #Sets devices for IO manager to VB Cables
     def setDevices(self):
         info = sd.query_devices()
-        
         for idx, x in enumerate(info):
             if x['name'] == 'CABLE-A Input (VB-Audio Cable A':
                 self.inputIdx = idx

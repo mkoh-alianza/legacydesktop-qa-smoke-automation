@@ -58,6 +58,7 @@ class ScreenScanner:
                         found1 = True
                     else:
                         x2y2 = (x + target.width, y + target.height)
+                        print("ScreenScanner has found Bria")
                         return x1y1 + x2y2
                     
                     
@@ -67,8 +68,9 @@ class ScreenScanner:
         grab = ImageGrab.grab()
         a = grab.getpixel((567, 273))
         
-        grab = ImageGrab.grab()
+
         time.sleep(6)
+        grab = ImageGrab.grab()
         b = grab.getpixel((567, 273))
         
         if(a[1] != b[1] or a[0] != b[0]):

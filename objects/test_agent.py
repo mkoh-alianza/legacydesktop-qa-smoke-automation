@@ -13,11 +13,13 @@ from constants import *
 from action_clicker import ActionClicker
 from screen_scanner import ScreenScanner
 from uem_bridge import UemBridge
-
+#login'er 
 
 def do(action):
-        ActionClicker.doAction(action)
-
+    ActionClicker.doAction(action)
+def wait(tim):
+    time.sleep(tim + 4)
+    
 class TestAgent:
 
     def __init__(self, uri=None):
@@ -25,9 +27,16 @@ class TestAgent:
         self.bridge = ApiBridge(WEBSOCKET_ADDRESS)
         self.io = DeviceIO()
         self.io.setDevices()
-        self.briaArea = None
+        self.briaArea = ScreenScanner.findBria()
         self.uem = UemBridge(UEM_ADDRESS, SRETTO_USERNAME, SRETTO_PASSWORD)
-        
+
+    def do(action):
+        ActionClicker.doAction(action)
+    def wait(tim):
+        time.sleep(tim + 4)
+    def find(img):
+        ScreenScanner.checkForImage(img, self.briaArea)
+    
     def test_audio(self):
         self.io.loadFile(os.getcwd() + "./test-data/weekday1.wav")
         self.io.playRecord(os.getcwd() + "./outputs/test1.wav")
@@ -37,17 +46,17 @@ class TestAgent:
         TextComparer.compareOutputToFile("./test-data/weekday1.txt", output)
 
     def test_incoming_call(self):
-        time.sleep(5)
+        wait(5)
         
         ActionClicker.switchToRemote(NUM_ENDS,0)
         ActionClicker.dial(END_A);
         do("Call")
     
         ActionClicker.backToLocal()
-        time.sleep(3)
+        wait(3)
         do("Answer")
 		
-        time.sleep(5)
+        wait(5)
         self.io.loadFile(os.getcwd() + "./test-data/weekday1.wav")
         self.io.playRecord(os.getcwd() + "./outputs/test1.wav")
 
@@ -58,12 +67,12 @@ class TestAgent:
         do("EndCall")
 
     def test_outgoing_call(self):
-        time.sleep(5)
+        wait(5)
 
         ActionClicker.dial(END_B)
         do("Call")
     
-        time.sleep(2)
+        wait(2)
 
         ActionClicker.switchToRemote(NUM_ENDS,0)
 
@@ -71,7 +80,7 @@ class TestAgent:
 		
         ActionClicker.backToLocal()
         
-        time.sleep(2)
+        wait(2)
         self.io.loadFile(os.getcwd() + "./test-data/weekday1.wav")
         self.io.playRecord(os.getcwd() + "./outputs/test2.wav")
 
@@ -83,12 +92,12 @@ class TestAgent:
 
 
     def test_mute(self):
-        time.sleep(5)
+        wait(5)
         
         ActionClicker.dial(END_B);
         do("Call")
     
-        time.sleep(2)
+        wait(2)
 
         ActionClicker.switchToRemote(NUM_ENDS,0)
 
@@ -98,7 +107,7 @@ class TestAgent:
         
         do("Mute")
 
-        time.sleep(2)
+        wait(2)
         self.io.loadFile(os.getcwd() + "./test-data/weekday1.wav")
         self.io.playRecord(os.getcwd() + "./outputs/mute1.wav")
 
@@ -116,30 +125,30 @@ class TestAgent:
         do("EndCall")
 
     def test_hold(self):
-        time.sleep(5)
+        wait(5)
         
         ActionClicker.dial(END_B)
         do("Call")
     
-        time.sleep(2)
+        wait(2)
 
         ActionClicker.switchToRemote(NUM_ENDS,0)
 
         do("Answer")
 		
         ActionClicker.backToLocal()
-        time.sleep(2)
+        wait(2)
 
         do("Hold")
 
-        time.sleep(2)
+        wait(2)
         self.io.loadFile(os.getcwd() + "./test-data/weekday1.wav")
         self.io.playRecord(os.getcwd() + "./outputs/mute1.wav")
 
         output = AudioRecognizer.work(os.getcwd() + "./outputs/mute1.wav")
         print(TextComparer.isBlank(output))
 
-        time.sleep(2)
+        wait(2)
 
         do("Unhold")
 
@@ -159,121 +168,137 @@ class TestAgent:
     def video_start(self):
         
         do("Contacts")
+        do("ClearContactSearch")
         do("ContSearch")
         ActionClicker.type(END_B_NAME)
         do("VideoCall1")
         
         ActionClicker.switchToRemote(NUM_ENDS, 0)
         
-        time.sleep(3)
+        wait(3)
         
         do("VideoAccept")
         
         ActionClicker.backToLocal()
         
-        time.sleep(10)
+        wait(10)
         
         do("Center")
         
-        time.sleep(1)
+        wait(1)
         
         offset = ScreenScanner.verifyVideo()
         
         do("EndVideo")
-        time.sleep(5)
+        wait(5)
         do("ClearContactSearch")
         
     def video_upgrade(self):
-        time.sleep(5)
+        wait(5)
         ActionClicker.switchToRemote(NUM_ENDS,0)
         ActionClicker.dial(END_A);
         do("Call")
     
         ActionClicker.backToLocal()
-        time.sleep(3)
+        wait(3)
         do("Answer")
-        time.sleep(2)
+        wait(2)
         do("UpgradeVideo")
         ActionClicker.switchToRemote(NUM_ENDS,0)
         do("UpgradeVideo")
         
         ActionClicker.backToLocal()
-        time.sleep(8)
+        wait(8)
         
         offset = ScreenScanner.verifyVideo()
         
         do("EndVideo")
-      
       #TODO must add logic for attended transfers
     def receive_transfer(self, transferType):
-        time.sleep(5)
+        wait(5)
 
         ActionClicker.switchToRemote(NUM_ENDS,1)
 
         ActionClicker.dial(END_B)
         do("Call")
 
-        time.sleep(2)
+        wait(2)
         
         ActionClicker.backToLocal()
         ActionClicker.switchToRemote(NUM_ENDS,0)
         do("Answer")
         
-        time.sleep(2)
+        wait(4)
+        
+        ActionClicker.backToLocal()
+        ActionClicker.switchToRemote(NUM_ENDS,1)
+        
+        wait(4)
         
         ActionClicker.transfer(END_A, transferType)
         
         ActionClicker.backToLocal()
         
-        time.sleep(3)
+        wait(3)
         
         do("Answer")
         
-        self.testAudio()
+        self.test_audio()
         
         do("EndCall")
-        
+    #TODO Add conference call   
     def call_swap(self):
-        time.sleep(5)
+        wait(5)
 
         ActionClicker.switchToRemote(NUM_ENDS,1)
 
         ActionClicker.dial(END_A)
         do("Call")
 
-        time.sleep(2)
+        wait(2)
         
         ActionClicker.backToLocal()
+        
+        wait(2)
+        do("Answer")
+        
         ActionClicker.switchToRemote(NUM_ENDS,0)
         ActionClicker.dial(END_A)
         do("Call")
+        
         ActionClicker.backToLocal()
         
-        time.sleep(2)
-        do("Answer")
-        time.sleep(2)
+        wait(2)
+        do("Answer2")
+        wait(2)
         
-        do("Swap2")
-        
-        self.test_audio(self)
+        self.test_audio()
         
         do("Swap1")
         
-        self.test_audio(self)
+        #self.test_audio()
+        wait(2)
+        
+        do("Swap2")
+        
+        self.test_audio()
+        
+        do("EndVideo")
+        
+        wait(4)
         
         do("EndCall")
         
-        time.sleep(2)
+        do("EndVideo")
         
-        do("EndCall")
-        
+    #@TODO, fix this, not testing the right thing    
     def MWI(self):
-        time.sleep(5)
+        wait(5)
 
         ActionClicker.dial(END_B);
         do("Call")
     
-        time.sleep(2)
+        wait(2)
 
         ActionClicker.switchToRemote(NUM_ENDS,0)
 
@@ -281,14 +306,16 @@ class TestAgent:
 		
         ActionClicker.backToLocal()
         
-        time.sleep(2)
+        wait(8)
         
-        screen_scanner.checkForImage("MWI", self.briaArea)
+        print(ScreenScanner.checkForImage("MWI", self.briaArea))
         
         do("EndCall")
 
     
     def contactCall(self):
+        wait(5)
+        
         do("Contacts")
         do("ContSearch")
         ActionClicker.type(END_B_NAME)
@@ -296,13 +323,13 @@ class TestAgent:
         
         ActionClicker.switchToRemote(NUM_ENDS, 0)
         
-        time.sleep(3)
+        wait(3)
         
         do("Answer")
         
         ActionClicker.backToLocal()
         
-        self.testAudio()
+        self.test_audio()
 
         do("EndCall")
         
@@ -310,35 +337,35 @@ class TestAgent:
    
    
     def historyCall(self):
-        time.sleep(5)
+        wait(5)
         
         do("HistoryTab")
         do("HistoryCall1")
         
         ActionClicker.switchToRemote(NUM_ENDS, 0)
         
-        time.sleep(3)
+        wait(3)
         
         do("Answer")
         
         ActionClicker.backToLocal()
                 
-        time.sleep(1)
+        wait(1)
         
-        self.testAudio()
+        self.test_audio()
         
         do("EndCall")
         
    
     def verifyPresence(self):
-        time.sleep(5)
+        wait(5)
 
-        ScreenScanner.checkForImage("p2")
+        print(ScreenScanner.checkForImage("p2"))
 
         ActionClicker.dial(END_B);
         do("Call")
     
-        time.sleep(2)
+        wait(2)
 
         ActionClicker.switchToRemote(NUM_ENDS,0)
 
@@ -346,52 +373,55 @@ class TestAgent:
 		
         ActionClicker.backToLocal()
 
-        ScreenScanner.checkForImage("p3")
+        print(ScreenScanner.checkForImage("p3"))
         
-        ActionClicker.endCall()
+        do("EndCall")
         
     def createContact(self, testNo):
-        time.sleep(5)
+        wait(5)
         
         do("Contacts")
         do("AddContact")
         do("ContactDisplay")
-        ActionClicker.type("Display Test" + TestNo)
+        ActionClicker.type("Display Test " + str(testNo))
         do("ContactFirstName")
-        ActionClicker.type(TestNo+" First")
+        ActionClicker.type(str(testNo) + " First")
         do("ContactLastName")
-        ActionClicker.type(TestNo+" Last")
+        ActionClicker.type(str(testNo) +" Last")
         do("ContactSoftphone")
-        ActionClicker.type("1112")
+        ActionClicker.type("1112123124")
         do("ContactAddNum")
         do("SaveContact")
         
-        do("ContSearch")
-        ActionClicker.type(TestNo)
+        wait(1)
+        do("ClearContactSearch")
         
-        ScreenScnaner.checkForImage("ContactExists")
+        do("ContSearch")
+        ActionClicker.type(str(testNo))
+        
+        print(ScreenScanner.checkForImage("ContactExists"))
         
         do("ClearContactSearch")
         
     def verifyMissedCall(self):
-        time.sleep(5)
-        
+        wait(5)
+        do("HistoryTab")
         do("Dialpad")
         
         ActionClicker.switchToRemote(NUM_ENDS, 0)
         
-        ActionClicker.dial(END_B);
+        ActionClicker.dial(END_A);
         do("Call")
         
         ActionClicker.backToLocal();
         
-        time.sleep(20)
+        wait(20)
         
-        ScreenScanner.checkForImage("1MissedCall")
+        print(ScreenScanner.checkForImage("1MissedCall"))
         
         
     def contactPresence(self):
-        time.sleep(5)
+        wait(5)
         
         ActionClicker.switchToRemote(NUM_ENDS, 0)
         
@@ -403,7 +433,7 @@ class TestAgent:
         do("ContSearch")
         ActionClicker.type(END_B_NAME)
         
-        ScreenScanner.checkForImage("ContactBusyPresence")
+        print(ScreenScanner.checkForImage("ContactBusyPresence"))
         
         ActionClicker.switchToRemote(NUM_ENDS, 0)
         
@@ -411,40 +441,58 @@ class TestAgent:
         
         ActionClicker.backToLocal()
         
+        do("ClearContactSearch")
+        
     def receiveIM(self):
-        time.sleep(5)
+        wait(5)
         
         ActionClicker.switchToRemote(NUM_ENDS, 0)
         
-        do("GoToMessageSearch")
+        #do("GoToMessageSearch")
+        do("Contacts")
+        do("ContSearch")
         
         ActionClicker.type(END_A_NAME)
         
-        do("MessageTopIMResult")
+        do("MessageTopContact")
         
-        ActionClicker.type("test", time=0.1)
+        #do("MessageTopIMResult")
+        
+        ActionClicker.type("i", time=0.1)
+        ActionClicker.pressKey('enter')
+        ActionClicker.type("i", time=0.1)
+        ActionClicker.pressKey('enter')
+        ActionClicker.type("i", time=0.1)
+        ActionClicker.pressKey('enter')
+        ActionClicker.type("i", time=0.1)
         ActionClicker.pressKey('enter')
         ActionClicker.type("test", time=0.1)
         ActionClicker.pressKey('enter')
-        ActionClicker.type("test", time=0.1)
-        ActionClicker.pressKey('enter')
+        
+        do("ClearContactSearch")
         
         ActionClicker.backToLocal()
-        time.sleep(1)
         
-        print(ScreenScanner.checkForImage("IMAlert"))
+        wait(2)
         
-        time.sleep(1)
+        do("Contacts")
+        do("ContSearch")
         
-        print(ScreenScanner.checkForImage("IMAlert"))
+        ActionClicker.type(END_B_NAME)
+        
+        do("MessageTopContact")
+        wait(2)
+        print(ScreenScanner.checkForImage("testImg"))
+        
+        do("ClearContactSearch")
         
     def call_recording(self):
-        time.sleep(5)
+        wait(5)
 
         ActionClicker.dial(END_B);
         do("Call")
     
-        time.sleep(2)
+        wait(2)
 
         ActionClicker.switchToRemote(NUM_ENDS,0)
 
@@ -454,17 +502,17 @@ class TestAgent:
         
         do("toggleTopCallRecording")
         
-        time.sleep(2)
+        wait(2)
         self.io.loadFile(os.getcwd() + "./test-data/weekday1.wav")
         self.io.play(os.getcwd() + "./test-data/weekday1.wav")
 
         do("toggleTopCallRecording")
 		
-        time.sleep(3)
+        wait(3)
         
         do("EndCall")
 
-        time.sleep(2)
+        wait(2)
 
         output = AudioRecognizer.work(RECORDING_PATH + '/' + AudioRecognizer.findNewestRecording(RECORDING_PATH))
 
@@ -511,7 +559,7 @@ class TestAgent:
         
         do("CreateChatRoom")
         
-        time.sleep(2)
+        wait(2)
         
         ScreenScanner.checkForImage("PrivateChat")
         
@@ -528,7 +576,7 @@ class TestAgent:
         
         do("CreateChatRoom")
         
-        time.sleep(2)
+        wait(2)
         
         ScreenScanner.checkForImage("PublicChat")
         
@@ -548,7 +596,7 @@ class TestAgent:
         
         ActionClicker.clickAt(area[0], area[1])
         
-        time.sleep(2)
+        wait(2)
         
         print(ScreenScanner.checkForImage("SmallScreenShareImage"))
         
