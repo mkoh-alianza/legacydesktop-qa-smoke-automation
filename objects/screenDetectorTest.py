@@ -1,11 +1,27 @@
 import pyautogui
 # pip install opencv-python
 import time 
-
+from PIL import Image 
+import credentials
+import os
 
 
 class locationList: 
     def __init__(self):   
+
+        self.CymbusIcon = [-1, -1]
+        self.EnterpriseIcon = [-1, -1]
+        self.remoteDesktopIcon = [-1, -1]
+        self.remoteMinimize = [-1, -1]
+
+        self.signin_username = [-1, -1]
+        self.signin_password = [-1, -1]
+        self.signin_remember = [-1, -1]
+        self.signin_automatic = [-1, -1]
+        self.signin_signin = [-1, -1]
+        self.signin_cancel = [-1, -1]
+        self.signin_emergency = [-1, -1]
+
         self.numpad_0 = [-1, -1]
         self.numpad_1 = [-1, -1]
         self.numpad_2 = [-1, -1]
@@ -79,53 +95,87 @@ class locationList:
 class Detector:
 
     # brandIndex: 0 if Enterprise, 1 if Cymbus
-    def __init__(self, brandIndex = 1):      
+    # scale is not the same thing as a resolution
+    def __init__(self, brandIndex = 1, scale=100):      
         self.button = locationList()
         brandTypes = ["Bria Enterprise", "Cymbus"]
         self.brand = brandTypes[brandIndex]
-        # TODO: check for various icons and check screen zoom 
-        if 1: 
-            self.filelocation = './detectorImages/100_'
-        else:
-            self.filelocation = './detectorImages/125_'
+        self.filelocation = './../detectorImages/'
+        self.scaleRatio = scale / 100 
 
 
     
     def __imageLocation__(self, filename, confidence=0.6):
-        loc = (pyautogui.locateOnScreen(self.filelocation + filename + '.png', confidence=confidence))
+        image = Image.open(self.filelocation + filename + '.png')
+        image = image.resize( [int(self.scaleRatio * s) for s in image.size] )
+        loc = (pyautogui.locateOnScreen(image, confidence=confidence))
         if loc is None:
             self.clickAppIcon()
-            loc = (pyautogui.locateOnScreen(self.filelocation + filename + '.png', confidence=confidence))
+            loc = (pyautogui.locateOnScreen(image, confidence=confidence))
         if loc is None: 
             return None 
         return loc[0], loc[1]
 
     def __imageCenterLocation__(self, filename, confidence=0.6):
-        loc = (pyautogui.locateCenterOnScreen(self.filelocation + filename + '.png', confidence=confidence))
+        image = Image.open(self.filelocation + filename + '.png')
+        image = image.resize( [int(self.scaleRatio * s) for s in image.size] )
+        loc = (pyautogui.locateCenterOnScreen(image, confidence=confidence))
         if loc is None:
             self.clickAppIcon()
-            loc = (pyautogui.locateCenterOnScreen(self.filelocation + filename + '.png', confidence=confidence))
+            loc = (pyautogui.locateCenterOnScreen(image, confidence=confidence))
         if loc is None: 
             return None 
         return loc[0], loc[1]
 
     def __imageSize__(self, filename, confidence=0.6):
-        loc = (pyautogui.locateOnScreen(self.filelocation + filename + '.png', confidence=confidence))
+        image = Image.open(self.filelocation + filename + '.png')
+        image = image.resize( [int(self.scaleRatio * s) for s in image.size] )
+        loc = (pyautogui.locateOnScreen(image, confidence=confidence))
         if loc is None:
             self.clickAppIcon()
-            loc = (pyautogui.locateOnScreen(self.filelocation + filename + '.png', confidence=confidence))
+            loc = (pyautogui.locateOnScreen(image, confidence=confidence))
         if loc is None: 
             return None 
         return loc[2], loc[3]
     
     def __imageLocationSize__(self, filename, confidence=0.6):
-        loc = (pyautogui.locateOnScreen(self.filelocation + filename + '.png', confidence=confidence))
+        image = Image.open(self.filelocation + filename + '.png')
+        image = image.resize( [int(self.scaleRatio * s) for s in image.size] )
+        loc = (pyautogui.locateOnScreen(image, confidence=confidence))
         if loc is None:
             self.clickAppIcon()
-            loc = (pyautogui.locateOnScreen(self.filelocation + filename + '.png', confidence=confidence))
+            loc = (pyautogui.locateOnScreen(image, confidence=confidence))
         if loc is None: 
             return None 
         return [loc[0], loc[1]], [loc[2], loc[3]]
+
+
+    def __setLoginLocations__(self):
+        location, size = self.__imageLocationSize__("Login")
+        if location is None:
+            raise ValueError("Login not found on screen")
+        x_row = location[0] + (size[0]/2)
+        self.button.signin_username[0] = x_row
+        self.button.signin_password[0] = x_row
+        self.button.signin_remember[0] = x_row
+        self.button.signin_automatic[0] = x_row
+        self.button.signin_signin[0] = x_row
+        self.button.signin_cancel[0] = x_row
+    
+        y_div = size[1] / 10
+        self.button.signin_username[1] = location[1] + (y_div * 1)
+        self.button.signin_password[1] = location[1] + (y_div * 3)
+        self.button.signin_remember[1] = location[1] + (y_div * 4)
+        self.button.signin_automatic[1] = location[1] + (y_div * 6)
+        self.button.signin_signin[1] = location[1] + (y_div * 7)
+        self.button.signin_cancel[1] = location[1] + (y_div * 9)
+
+    def __setEmergencyLocation__(self):
+        location, size = self.__imageLocationSize__("EmergencyUpdatePrompt")
+        if location is None:
+            raise ValueError("Emergency location update prompt not found on screen")
+        self.button.signin_emergency[0] = location[0] + size[0] - 40
+        self.button.signin_emergency[1] = location[1] + size[1] - 20
 
 
     
@@ -338,15 +388,28 @@ class Detector:
 
     def clickAppIcon(self):
         if self.brand == "Cymbus":
-            location = self.__imageCenterLocation__("CymbusIcon")
-            pyautogui.click(location)
+            if self.button.CymbusIcon[0] == -1:
+                location = self.__imageCenterLocation__("CymbusIcon")
+                if location is None:
+                    raise ValueError("Cymbus icon not found on screen")
+                self.button.CymbusIcon = location
+            pyautogui.click(self.button.CymbusIcon)
+        else:
+            if self.button.EnterpriseIcon[0] == -1:
+                location = self.__imageCenterLocation__("EnterpriseIcon")
+                if location is None:
+                    raise ValueError("Enterprise icon not found on screen")
+                self.button.EnterpriseIcon = location
+            pyautogui.click(self.button.EnterpriseIcon)
 
 
-    def toRemote(self):
-        location = self.__imageCenterLocation__("Remote")
-        if location is None:
-            raise ValueError("Remote icon not found on screen")
-        pyautogui.click(location)
+    def toRemote(self):        
+        if self.button.remoteDesktopIcon[0] == -1:
+            location = self.__imageCenterLocation__("Remote")
+            if location is None:
+                raise ValueError("Remote icon not found on screen")
+            self.button.remoteDesktopIcon = location
+        pyautogui.click(self.button.remoteDesktopIcon)
 
 
     def toLocal(self):
@@ -361,13 +424,13 @@ class Detector:
 
 
     def setButtonLocations(self):
-        # self.__setTabLocations__()
-        # self.__setMenuLocations__()
-        # self.__setNumpadLocations__()
-        # self.__setSoftphoneDropLocations__()
-        # self.__setViewDropLocations__()
-        # self.__setHelpDropLocations__()
-        self.__setTopRightIconLocations__()
+        self.__setTabLocations__()
+        self.__setMenuLocations__()
+        self.__setNumpadLocations__()
+        self.__setSoftphoneDropLocations__()
+        self.__setViewDropLocations__()
+        self.__setHelpDropLocations__()
+        # self.__setTopRightIconLocations__()
 
     
     def __test__(self):
@@ -426,32 +489,77 @@ class Detector:
 
 
 
+class Login:
+    
+    def __init__(self, detector, brandIndex = 0, credentials = credentials.vccs[0], printProgress = True):
+        self.os = os.name 
+        brandTypes = ["Bria Enterprise", "Cymbus"]
+        self.brand = brandTypes[brandIndex]
+        if brandIndex == 0:
+            self.path = '"C:\Program Files (x86)\CounterPath\Bria Enterprise\BriaEnterprise.exe"'
+        elif brandIndex == 1: 
+            self.path = '"C:\Program Files (x86)\Cymbus\Cymbus\cymbus.exe"'
+        self.proc = ""
+        self.procPid = ""
+        self.username = credentials[0]
+        self.password = credentials[1]
+        self.printProgress = printProgress
+        self.detector = detector
 
-if __name__ == '__main__':
-    time.sleep(2)
-    local_detector = Detector(1) 
-    local_detector.setButtonLocations()
-    local_detector.clickButton("screenshare")
-    time.sleep(1)
-    local_detector.clickButton("screenshare_start")
+
+    def login(self):
+        # self.detector.clickAppIcon()
+        self.detector.clickButton("signin_username")
+        pyautogui.write(self.username)
+        self.detector.clickButton("signin_password")
+        pyautogui.write(self.password)
+        self.detector.clickButton("signin_remember")
+        self.detector.clickButton("signin_remember")
+        self.detector.clickButton("signin_signin")
+        time.sleep(1)
+        self.detector.__setEmergencyLocation__()
+        self.detector.clickButton("signin_emergency")
+    
+
+
+    def __test__(self):
+        self.detector.clickButton("login")
     
 
 
 
-    # local_detector = Detector(1) 
-    # remote_detector = Detector(1)
 
-    # local_detector.setButtonLocations()
+
+
+if __name__ == '__main__':
+    time.sleep(2)
+    local_detector = Detector(1, 100) 
+    local_detector.__setLoginLocations__()
+
+    login = Login(local_detector, 1, credentials.amyqa[0], True)
+    login.login()
 
     # local_detector.toRemote()
+
+    # remote_detector = Detector(1, 100)
     # remote_detector.setButtonLocations()
 
-    # time.sleep(3)
     # remote_detector.toLocal()
-    # local_detector.__test__()
+    # time.sleep(2)
 
+
+    # local_detector.clickButton("menu_softphone")
+    # time.sleep(1)
+    # local_detector.clickButton("menu_help")
+    # time.sleep(1)
     # local_detector.toRemote()
-    # remote_detector.__test__()
+    # time.sleep(2)
+    # remote_detector.clickButton("menu_softphone")
+    # time.sleep(1)
+    # remote_detector.clickButton("menu_help")
+    
+
+
 
 
 
