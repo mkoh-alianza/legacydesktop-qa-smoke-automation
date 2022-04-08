@@ -151,20 +151,6 @@ class Login:
             self.__clickImageCenter__("Softphone_Signout")
 
 
-    # # Exit using mouse clicks
-    # def close(self):
-    #     if not self.__setWindow__(self.brand):
-    #         self.__setWindow__(self.brand + " Sign In")
-    #         self.__activateWindow__()
-    #         if self.printProgress: print(f"Now closing {self.brand}")
-    #         location = ScreenScanner.findImage('CymbusSignIn')
-    #         self.__mouseClick__(location[0] + 30, location[1] + 50)
-    #     else:
-    #         self.__activateWindow__()
-    #         if self.printProgress: print(f"Now closing {self.brand}")
-    #         self.__mouseClick__(36, 44)
-    #         time.sleep(1)
-    #         self.__mouseClick__(28, 143)
 
 
 
