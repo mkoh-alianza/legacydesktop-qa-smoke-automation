@@ -1,11 +1,7 @@
-import sys 
 import time
 import os
-from os.path import exists
-import platform
-import re           # for regex
 import pyautogui    # pip install opencv-python
-import win32com.shell.shell as shell    # for running in admin mode
+# import win32com.shell.shell as shell    # for running in admin mode
 import ctypes # for running in admin mode
 
 from initializer import Initializer
@@ -142,6 +138,7 @@ class Login:
             time.sleep(1)
             self.__clickImageCenter__("Softphone_Exit")
         
+        
     # sign out using mouse clicks
     def signout(self):
         self.showPhone()
@@ -164,11 +161,23 @@ class Login:
 
 if __name__ == '__main__':
 
-    def is_admin():
-        try:
-            return ctypes.windll.shell32.IsUserAnAdmin()
-        except:
-            return False
+    try: 
+        initializer = Initializer()
+        installer = Click_Installer(initializer)
+        login = Login(initializer, installer)
+        login.login()
+        
+        input("-------------------------------\nNo issues, press enter to exit!")
+    except Exception:
+        input("-----------------------\nPress Enter to exit...")
+    except KeyboardInterrupt:
+        input("----------------------------------------------------\nKeyboard Interrupt detected, press Enter to exit...")
+
+
+    # as of now, login doesn't need admin privileges
+    """ def is_admin():
+        try: return ctypes.windll.shell32.IsUserAnAdmin()
+        except: return False
 
     if is_admin():
         
@@ -176,17 +185,15 @@ if __name__ == '__main__':
             initializer = Initializer()
             installer = Click_Installer(initializer)
             login = Login(initializer, installer)
-            # login.signout()
             login.login()
             
-            input("\nNo issues, press enter to exit!")
+            input("-------------------------------\nNo issues, press enter to exit!")
         except Exception:
-            input("\nPress Enter to exit...")
+            input("-----------------------\nPress Enter to exit...")
         except KeyboardInterrupt:
-            input("\nKeyboard Interrupt detected, press Enter to exit...")
-
+            input("----------------------------------------------------\nKeyboard Interrupt detected, press Enter to exit...")
 
     else:
         # Re-run the program with admin rights
-        ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__, None, 1)
-        exit(0)
+        if os.name == "nt": ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__, None, 1)
+        exit(0) """

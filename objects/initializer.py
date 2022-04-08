@@ -6,7 +6,7 @@ import ctypes # for running in admin mode
 from tkinter import *   # pip install tk    
 from tkinter.filedialog import askopenfilename
 from functools import partial
-from credentials import accountList
+from credentials import accountList     # list of accounts that can be used, stored in credentials.py
 
 
 
@@ -23,15 +23,17 @@ class Initializer:
         self.__setVariabes__()
 
         if self.brand == "":
-            print("No brand selected")
+            print("[Error] No brand selected, aborting\n")
             raise ValueError
             
         self.__getFile__()
         
 
-        
+
+    # calls tkinter GUI to get user input on variables 
     def __setVariabes__(self):
 
+        # once user clicks submit, save the user defined values 
         def onButtonClick(root):
             if brandIndex.get() == 0:
                 self.brand = "BriaEnterprise"
@@ -79,7 +81,6 @@ class Initializer:
 
         Label(root, text="Select account", font=('Calibri 13')).pack( pady = (13, 5) )
 
-        # Add more account options if needed 
         d = OptionMenu(root, account, *accountList )
         d.pack( anchor = W, padx = 10, pady = 13 )
         
@@ -92,23 +93,22 @@ class Initializer:
 
 
 
+    # calls tkinter GUI to get build files 
+    # if the build file doesn't match the brand previously defined, raises exception 
     def __getFile__(self): 
         if self.os == "nt":
-            initialdir='/Downloads'
-            # initialdir='/'
+            initialdir='/'      # initial directory, change if needed 
+            # initialdir='/Downloads'
             installerPath = askopenfilename(title="Select file to install", initialdir=initialdir)
-            if self.brand == "Cymbus" and not re.match(r".*Cymbus.*", installerPath): 
-                    print("File you selected does not match the brand you specified previously")
-                    raise ValueError
-            elif self.brand == "BriaEnterprise" and not re.match(r".*Bria_Enterprise.*", installerPath): 
-                    print("File you selected does not match the brand you specified previously")
+            if (self.brand == "Cymbus" and not re.match(r".*Cymbus.*", installerPath)) or\
+            (self.brand == "BriaEnterprise" and not re.match(r".*Bria_Enterprise.*", installerPath)): 
+                    print("[Error] File you selected does not match the brand you specified previously, aborting\n")
                     raise ValueError
         else: 
+            # TODO 
             print("")
 
-        if self.os == "nt":
-            installerPath = installerPath.replace("/", "\\")
-
+        if self.os == "nt": installerPath = installerPath.replace("/", "\\")
         self.installerPath = installerPath
 
 
@@ -117,15 +117,24 @@ class Initializer:
 
 if __name__ == '__main__':
 
-    def is_admin():
-        try:
-            return ctypes.windll.shell32.IsUserAnAdmin()
-        except:
-            return False
+    try: 
+        initializer = Initializer()
+        input("-------------------------------\nNo issues, press enter to exit!\n")
+    except Exception:
+        input("-----------------------\nPress Enter to exit...")
+    except KeyboardInterrupt:
+        input("----------------------------------------------------\nKeyboard Interrupt detected, press Enter to exit...")
+                 
+
+    # as of now, initializer doesn't need admin privileges
+    """ def is_admin():
+        try: return ctypes.windll.shell32.IsUserAnAdmin()
+        except: return False
 
     if is_admin():
         try: 
             initializer = Initializer()
+            input("-------------------------------\nNo issues, press enter to exit!\n")
         except Exception:
             input("\nPress Enter to exit...")
         except KeyboardInterrupt:
@@ -134,5 +143,4 @@ if __name__ == '__main__':
     else:
         # Re-run the program with admin rights
         if os.name == "nt": ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__, None, 1)
-        # elif self.os == "posix": os.system("""osascript -e 'do shell script "mkdir -m 0775 -p \\"%s\\" " with administrator privileges'"""%d)
-        exit(0)
+        exit(0) """

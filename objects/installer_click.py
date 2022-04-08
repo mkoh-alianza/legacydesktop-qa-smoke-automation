@@ -19,6 +19,7 @@ class Click_Installer:
         self.scaleRatio = initializer.scaleRatio
         self.brand = initializer.brand
         
+        # for quicker testing 
         # self.printProgress = True
         # self.installerPath = "C:/Users/QA/Downloads/Bria_Enterprise_6.5.4_QA4_110355.msi"
         # # self.installerPath = "C:/Users/QA/Downloads/Cymbus_6.5.4_QA4_110352.msi"
@@ -34,7 +35,7 @@ class Click_Installer:
             image = Image.open(self.imageFolder + filename + '.png')
             image = image.resize( [int(self.scaleRatio * s) for s in image.size] )
         except FileNotFoundError:
-            if self.printProgress: print(f"Image file '{filename}' does not exist")
+            if self.printProgress: print(f"[Error] Image file '{filename}' does not exist")
             raise ValueError
 
         try: 
@@ -72,7 +73,7 @@ class Click_Installer:
                 time.sleep(0.5)
                 if self.__imageLocation__("FolderInUse"):
                     self.__clickImageCenter__("FolderInUse_Cancel")
-                    if self.printProgress: print(f"{path} folder in use, could not delete\n")
+                    if self.printProgress: print(f"[Issue] {path} folder in use, could not delete\n")
                 else: 
                     if self.printProgress: print(f"{path} folder deleted\n")
                 pyautogui.hotkey("alt", "f4")
@@ -82,9 +83,8 @@ class Click_Installer:
             if self.printProgress: print(f"{path} folder not found, no action required\n")
 
 
-    def clearCache(self):
-        # 이거 미팅 끝나고 복구 시키기!!!!! 
-        # self.closeApplication()
+    def clearCache(self): 
+        self.closeApplication()
         time.sleep(2)
         if self.os == "nt": 
             if self.brand == "Cymbus":
@@ -115,27 +115,6 @@ class Click_Installer:
             if self.printProgress: print("Application not running\n")
             
 
-    # 안쓰이면 삭제하셈 
-    def __checkProcess__(self):
-        # Search through processes and see if application is running
-        if self.printProgress: print(f"Determining if {self.brand} is running...\n")
-        pidsList = psutil.pids()
-        
-        if self.brand == 'Cymbus':
-            client_proc_name = 'cymbus.exe'
-        else: 
-            client_proc_name = 'BriaEnterprise.exe'
-
-        for pid in pidsList:
-            try:
-                p = psutil.Process(pid)
-                if(p.name() == client_proc_name):
-                    if self.printProgress: print("Application process found\n")
-                    return True 
-            except:
-                continue 
-
-
 
     def uninstall(self):
         self.closeApplication()
@@ -163,7 +142,7 @@ class Click_Installer:
                     self.printProgress = False
                     time.sleep(5)
                     startTime = time.time() 
-                    while (time.time() - startTime < 60) : 
+                    while time.time() - startTime < 60: 
                         if self.__imageLocation__("Uninstall_ProcessOpen"): 
                             self.__clickImageCenter__("Uninstall_Ok")
                         if self.__imageLocation__("Uninstall_CloseUnable"):
@@ -194,7 +173,7 @@ class Click_Installer:
             if self.brand == "Cymbus":
                 time.sleep(5)
                 if not self.__imageLocation__("Install_Window"): 
-                    print("Installer not found on screen")
+                    print("[Error] Installer not found on screen")
                     raise ValueError
                 self.__clickImageCenter__("Install_Agreement", 'left', 0.9)
                 self.__clickImageCenter__("Install_Install", 'left', 0.9)
