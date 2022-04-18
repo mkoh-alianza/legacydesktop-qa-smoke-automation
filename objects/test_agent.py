@@ -37,7 +37,7 @@ class TestAgent:
     def find(img):
         ScreenScanner.checkForImage(img, self.briaArea)
     
-    def test_audio(self):
+    def test_audio(self, file = None):
         self.io.loadFile(os.getcwd() + "./test-data/weekday1.wav")
         self.io.playRecord(os.getcwd() + "./outputs/test1.wav")
 
@@ -529,7 +529,7 @@ class TestAgent:
     def check_user_portal(self):
         do("UserPortalTab")
 
-        ScreenScanner.checkForImage("LogSent")
+        ScreenScanner.checkForImage("UserPortal")
 
 
     def check_uem_vqm(self):
