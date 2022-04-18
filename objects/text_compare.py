@@ -38,3 +38,4 @@ class TextComparer:
         
         print(str(issueCount) + " issues were found in total")
         print("  -- End of status report --  ")
+        return issueCount;
