@@ -24,7 +24,7 @@ class ScreenScanner:
     def findImage(toFind, area=None):
         
         try:
-            return  pyautogui.locateCenterOnScreen("./ScannerImages/" + toFind + ".png")
+            return  pyautogui.locateCenterOnScreen("./ScannerImages/" + toFind + ".png", confidence=0.9)
         except:
             return False
                     
@@ -32,36 +32,29 @@ class ScreenScanner:
     
     def checkForImage(toFind , area=None):
         
-        grab = ImageGrab.grab(bbox = area)
-        target = Image.open("./ScannerImages/" + toFind + ".png")
+        try: 
+            dest = pyautogui.locateCenterOnScreen("./ScannerImages/" + toFind + ".png", confidence=0.9)
+            if(dest == None):
+                return False
+            else:
+                return True
+            
+        except:
+            return False
         
-        for x in range(0, grab.width - target.width):
-            for y in range(0, grab.height - target.height):
-                if(ScreenScanner.verifyEquals(grab, target, (x,y))):
-                    return True
-                    
-        return False
 
     def findBria():
-        return None
-        grab = ImageGrab.grab()
-        target = Image.open("./ScannerImages/Title.png")
-        found1 = False
+
+        try: 
+            dest = pyautogui.locateCenterOnScreen("./ScannerImages/" + toFind + ".png", confidence=0.9)
+            if(dest == None):
+                return None
+            else:
+                return dest
+            
+        except:
+            return None
         
-        for x in range(0, grab.width - target.width):
-            for y in range(0, grab.height - target.height):
-                if(ScreenScanner.verifyEquals(grab, target, (x,y))):
-                    if(found1 == False):
-                        x1y1 = (x,y)
-                        target = Image.open("./ScannerImages/Bottom.png")
-                        found1 = True
-                    else:
-                        x2y2 = (x + target.width, y + target.height)
-                        print("ScreenScanner has found Bria")
-                        return x1y1 + x2y2
-                    
-                    
-        return None
 
     def verifyVideo():
         grab = ImageGrab.grab()
