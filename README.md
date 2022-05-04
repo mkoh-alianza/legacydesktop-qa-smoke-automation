@@ -1,3 +1,5 @@
+See documentation for complete steps: https://alianza.atlassian.net/wiki/spaces/DEV/pages/2708931010/Automation+for+Desktop+Client
+
 <h1> Steps to setup: </h1> 
 
 To set up the cable and windows:
