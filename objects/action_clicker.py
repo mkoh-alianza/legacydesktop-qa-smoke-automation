@@ -60,10 +60,13 @@ class ActionClicker:
         pyautogui.mouseUp(button=coords[0][3])
         sleep(1)
     
-    def clickAt(x, y):
-        pyautogui.moveTo(x, y)
-        pyautogui.mouseDown('leftt')
-        pyautogui.mouseUp('left')
+    def clickAt(xy, buttonPress = 'left'):
+        if(xy == None):
+            return False
+    
+        pyautogui.moveTo(xy.x, xy.y)
+        pyautogui.mouseDown(button=buttonPress)
+        pyautogui.mouseUp(button=buttonPress)
     
     
     def dial(num):

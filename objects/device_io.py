@@ -26,10 +26,10 @@ class DeviceIO:
         for idx, x in enumerate(info):
             if x['name'] == 'CABLE-A Input (VB-Audio Cable A':
                 self.inputIdx = idx
-                print('foundIn')
+                
             elif x['name'] == 'CABLE-B Output (VB-Audio Cable ':
                 self.outputIdx = idx
-                print('foundOut')
+                
                 
         if(self.inputIdx == 0 or self.outputIdx == 0):
             print('Unable to find the VC Cable, here are all detected audio devices:')

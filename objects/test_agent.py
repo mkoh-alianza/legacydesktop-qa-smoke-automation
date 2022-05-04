@@ -30,12 +30,15 @@ class TestAgent:
         self.briaArea = ScreenScanner.findBria()
         self.uem = UemBridge(UEM_ADDRESS, SRETTO_USERNAME, SRETTO_PASSWORD)
 
-    def do(action):
-        ActionClicker.doAction(action)
-    def wait(tim):
-        time.sleep(tim + 4)
-    def find(img):
-        ScreenScanner.checkForImage(img, self.briaArea)
+    def do(self, action):
+        return ActionClicker.doAction(action)
+    def wait(self, tim):
+        time.sleep(self, tim + 4)
+    def find(self, img):
+        return ScreenScanner.findImage(img)
+    
+    def clickAt(self, coords):
+        ActionClicker.clickAt(coords)
     
     def test_audio(self, file = None):
         self.io.loadFile(os.getcwd() + "./test-data/weekday1.wav")
@@ -594,7 +597,7 @@ class TestAgent:
         
         area = ScreenScanner.findImage("JoinScreenshare")
         
-        ActionClicker.clickAt(area[0], area[1])
+        ActionClicker.clickAt(area)
         
         wait(2)
         

@@ -1,6 +1,8 @@
 from PIL import ImageGrab
 from PIL import Image
 
+import pyautogui
+
 import time
 
 class ScreenScanner:
@@ -21,15 +23,12 @@ class ScreenScanner:
     
     def findImage(toFind, area=None):
         
-        grab = ImageGrab.grab(bbox = area)
-        target = Image.open("./ScannerImages/" + toFind + ".png")
-        
-        for x in range(0, grab.width - target.width):
-            for y in range(0, grab.height - target.height):
-                if(ScreenScanner.verifyEquals(grab, target, (x,y))):
-                    return (x,y)
+        try:
+            return  pyautogui.locateCenterOnScreen("./ScannerImages/" + toFind + ".png")
+        except:
+            return False
                     
-        return False
+
     
     def checkForImage(toFind , area=None):
         
@@ -44,7 +43,7 @@ class ScreenScanner:
         return False
 
     def findBria():
-        
+        return None
         grab = ImageGrab.grab()
         target = Image.open("./ScannerImages/Title.png")
         found1 = False
