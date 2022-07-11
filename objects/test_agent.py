@@ -29,24 +29,43 @@ class TestAgent:
         self.io.setDevices()
         self.briaArea = ScreenScanner.findBria()
         self.uem = UemBridge(UEM_ADDRESS, SRETTO_USERNAME, SRETTO_PASSWORD)
-
-    def do(self, action):
-        return ActionClicker.doAction(action)
-    def wait(self, tim):
-        time.sleep(self, tim + 4)
-    def find(self, img):
-        return ScreenScanner.findImage(img)
     
     def clickAt(self, coords):
         ActionClicker.clickAt(coords)
+#Below are helper functions/actions/verification
+
+    def do(self, action):
+        ActionClicker.doAction(action)
+    def wait(self, tim):
+        time.sleep(tim + 4)
+    def find(self, img):
+        return ScreenScanner.checkForImage(img, self.briaArea)
+
     
     def test_audio(self, file = None):
         self.io.loadFile(os.getcwd() + "./test-data/weekday1.wav")
         self.io.playRecord(os.getcwd() + "./outputs/test1.wav")
 
         output = AudioRecognizer.work(os.getcwd() + "./outputs/test1.wav")
-
+    
         TextComparer.compareOutputToFile("./test-data/weekday1.txt", output)
+
+    def dial(self, num):
+        ActionClicker.dial(num)
+
+    def transfer(self, num, transfer):
+        ActionClicker.transfer(num, transfer)
+    
+    def switchToRemote(self, num, pc):
+        ActionClicker.switchToRemote(num, pc)
+    
+    def backToLocal(self):
+        ActionClicker.backToLocal()
+        
+    def typeText(self, txt):
+        ActionClicker.type(txt)
+
+#Below are common cases
 
     def test_incoming_call(self):
         wait(5)
